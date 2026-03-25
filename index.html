@@ -174,6 +174,7 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
       <button class="nav-btn active" id="navRankingGeral" onclick="goSec('rankingGeral',this)">🎯 Ranking Geral</button>
       <button class="nav-btn" id="navRanking" onclick="goSec('ranking',this)">📋 1º Dia · 28/02</button>
       <button class="nav-btn" id="navRanking2" onclick="goSec('ranking2',this)">📋 2º Dia · 07/03</button>
+      <button class="nav-btn" id="navRankingS3" onclick="goSec('rankingS3',this)">📋 3º Sim · 14/03</button>
       <button class="nav-btn" id="navBusca" onclick="goSec('busca',this)">🔍 Buscar Aluno</button>
     </nav>
   </div>
@@ -335,6 +336,56 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
   </div>
 </div>
 
+<!-- RANKING 3º SIMULADO 1º DIA -->
+<div id="rankingS3Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>🏆 Ranking EsPCEx — 3º Simulado · 14/03/2026 · 1º Dia</h1>
+      <p>Classificação dos alunos em Português, Física e Química. O 2º Dia será acrescentado em breve.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>✓ Aprovado = acima da mediana em todas + redação entregue</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>✗ Reprovado = abaixo da mediana em ao menos 1</div>
+      <div class="legend-item">📌 Medianas (corte): Português 5,5 · Física 3,33 · Química 5,0</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 3º Simulado — 1º Dia</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalRkS3">0</span> · Aprovados: <span id="aprovRkS3" style="color:var(--green);font-weight:700">0</span> · Reprovados: <span id="reprovRkS3" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchRkS3" placeholder="🔍 Buscar pelo nome..." oninput="renderRankingS3()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFRkS3('todos',this)">🏆 Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFRkS3('aprov',this)">✅ Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFRkS3('reprov',this)">❌ Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFRkS3('unidade',this)">🏫 Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapRkS3" style="display:none;margin-bottom:14px">
+        <select id="uniSelRkS3" onchange="renderRankingS3()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">— Todas as unidades —</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Português</th>
+          <th>Física</th>
+          <th>Química</th>
+          <th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th>
+          <th>Status</th>
+        </tr></thead>
+        <tbody id="bodyRkS3"></tbody>
+      </table>
+      <div class="stat-grid" id="statsRkS3" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
 <!-- BUSCA -->
 <div id="buscaSection" class="section">
   <div class="page-wrap fade-in">
@@ -393,6 +444,151 @@ body{font-family:'Inter',-apple-system,sans-serif;background:var(--bg);color:var
 // Estrutura: Português (20q), Física (12q), Química (12q)
 // Medianas (corte): Port 5,0 | Fís 2,5 | Quím 4,17 | Redação entregue
 // ═══════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════
+// DADOS EsPCEx — Simulado 14/03/2026 — 3º SIMULADO · 1º DIA
+// Português(20q) · Física(12q) · Química(12q)
+// Medianas: Port 5,5 | Fís 3,33 | Quím 5,0
+// ═══════════════════════════════════════════════════════
+const RAW_S3D1 = [
+{unidade:"TAQUARA",nome:"GUILHERME FERREIRA",ra:"MT24159964",rank:1,port:18,m_port:9.0,fisi:10,m_fisi:8.33,quim:10,m_quim:8.33,media:8.63,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"GUSTAVO SANTOS",ra:"MT24157810",rank:2,port:18,m_port:9.0,fisi:10,m_fisi:8.33,quim:9,m_quim:7.5,media:8.44,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RENAN ALMEIDA",ra:"MT22061774",rank:3,port:16,m_port:8.0,fisi:9,m_fisi:7.5,quim:12,m_quim:10.0,media:8.28,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAMYLLE AMORIM",ra:"MT22102917",rank:4,port:18,m_port:9.0,fisi:10,m_fisi:8.33,quim:8,m_quim:6.67,media:8.26,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"WADRYAN PEREIRA",ra:"MT24160715",rank:5,port:18,m_port:9.0,fisi:7,m_fisi:5.83,quim:10,m_quim:8.33,media:7.8,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"JOÃO NASCIMENTO",ra:"MT25155615",rank:6,port:17,m_port:8.5,fisi:7,m_fisi:5.83,quim:9,m_quim:7.5,media:7.39,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"LUIZ MOREIRA",ra:"MT20042511",rank:7,port:15,m_port:7.5,fisi:7,m_fisi:5.83,quim:11,m_quim:9.17,media:7.31,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"GUSTAVO NASCIMENTO",ra:"MT24136756",rank:8,port:17,m_port:8.5,fisi:8,m_fisi:6.67,quim:7,m_quim:5.83,media:7.3,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RAFAELLY SANTOS",ra:"MT22089015",rank:9,port:17,m_port:8.5,fisi:6,m_fisi:5.0,quim:9,m_quim:7.5,media:7.11,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAROLLYNE AMORIM",ra:"MT22102925",rank:10,port:14,m_port:7.0,fisi:7,m_fisi:5.83,quim:11,m_quim:9.17,media:7.09,red:"Sim",aprov:1},
+{unidade:"CAMPO GRANDE",nome:"ALEXANDRE COELHO",ra:"MT23120405",rank:11,port:16,m_port:8.0,fisi:7,m_fisi:5.83,quim:8,m_quim:6.67,media:6.98,red:"Sim",aprov:1},
+{unidade:"",nome:"ALUNO MT8000124",ra:"MT8000124",rank:12,port:17,m_port:8.5,fisi:6,m_fisi:5.0,quim:8,m_quim:6.67,media:6.93,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"LUIZ SILVA",ra:"MT22100549",rank:13,port:15,m_port:7.5,fisi:6,m_fisi:5.0,quim:10,m_quim:8.33,media:6.85,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"RAFAEL FERNANDES",ra:"MT24160046",rank:14,port:13,m_port:6.5,fisi:8,m_fisi:6.67,quim:9,m_quim:7.5,media:6.78,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"EDUARDA FERREIRA",ra:"MT26203034",rank:15,port:16,m_port:8.0,fisi:6,m_fisi:5.0,quim:8,m_quim:6.67,media:6.7,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"JULIA OLIVEIRA",ra:"MT25165903",rank:16,port:14,m_port:7.0,fisi:6,m_fisi:5.0,quim:10,m_quim:8.33,media:6.63,red:"Sim",aprov:1},
+{unidade:"MADUREIRA",nome:"CLÍCIA BARCELLOS",ra:"MT25194945",rank:17,port:16,m_port:8.0,fisi:5,m_fisi:4.17,quim:9,m_quim:7.5,media:6.61,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"MARIA MATTOS",ra:"MT25187741",rank:18,port:13,m_port:6.5,fisi:8,m_fisi:6.67,quim:8,m_quim:6.67,media:6.59,red:"Sim",aprov:1},
+{unidade:"DUQUE DE CAXIAS",nome:"EDUARDO SILVA",ra:"MT23130172",rank:19,port:16,m_port:8.0,fisi:6,m_fisi:5.0,quim:7,m_quim:5.83,media:6.52,red:"Sim",aprov:1},
+{unidade:"CAMPO GRANDE",nome:"PABLO BORGES",ra:"MT23128036",rank:20,port:16,m_port:8.0,fisi:5,m_fisi:4.17,quim:8,m_quim:6.67,media:6.43,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"FERNANDA COSTA",ra:"MT24160707",rank:21,port:15,m_port:7.5,fisi:6,m_fisi:5.0,quim:7,m_quim:5.83,media:6.3,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"LIS RAMOS",ra:"MT25197658",rank:22,port:12,m_port:6.0,fisi:8,m_fisi:6.67,quim:7,m_quim:5.83,media:6.19,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"MATHEUS COELHO",ra:"MT25173931",rank:23,port:13,m_port:6.5,fisi:5,m_fisi:4.17,quim:10,m_quim:8.33,media:6.13,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"MARCO JUNIOR",ra:"MT25184482",rank:24,port:12,m_port:6.0,fisi:7,m_fisi:5.83,quim:8,m_quim:6.67,media:6.09,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"LUCKAS SANTOS",ra:"MT26201954",rank:25,port:14,m_port:7.0,fisi:6,m_fisi:5.0,quim:7,m_quim:5.83,media:6.07,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"RODRIGO MIRANDA",ra:"MT23109556",rank:26,port:13,m_port:6.5,fisi:6,m_fisi:5.0,quim:8,m_quim:6.67,media:6.04,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"GUILHERME SILVA",ra:"MT22103170",rank:27,port:14,m_port:7.0,fisi:5,m_fisi:4.17,quim:8,m_quim:6.67,media:5.98,red:"Sim",aprov:1},
+{unidade:"CAMPO GRANDE",nome:"JOAO SOUZA",ra:"MT22091391",rank:28,port:13,m_port:6.5,fisi:7,m_fisi:5.83,quim:6,m_quim:5.0,media:5.94,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:29,port:11,m_port:5.5,fisi:6,m_fisi:5.0,quim:9,m_quim:7.5,media:5.78,red:"Sim",aprov:1},
+{unidade:"NOVA IGUAÇU",nome:"YAGO RAMALHO",ra:"MT24136996",rank:30,port:13,m_port:6.5,fisi:5,m_fisi:4.17,quim:7,m_quim:5.83,media:5.57,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"PEDRO RIBEIRO",ra:"MT22093538",rank:31,port:11,m_port:5.5,fisi:7,m_fisi:5.83,quim:6,m_quim:5.0,media:5.5,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"FREDERICO MOREIRA",ra:"MT21064118",rank:32,port:11,m_port:5.5,fisi:6,m_fisi:5.0,quim:6,m_quim:5.0,media:5.22,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"VANDERSON RAMOS",ra:"MT26203695",rank:33,port:12,m_port:6.0,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:5.17,red:"Sim",aprov:1},
+{unidade:"DUQUE DE CAXIAS",nome:"JÚLIA SOARES",ra:"MT21073432",rank:34,port:12,m_port:6.0,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:5.17,red:"Sim",aprov:1},
+{unidade:"CAMPO GRANDE",nome:"LUIZ SILVA",ra:"MT19012798",rank:35,port:17,m_port:8.5,fisi:5,m_fisi:4.17,quim:11,m_quim:9.17,media:7.2,red:"Não",aprov:0},
+{unidade:"",nome:"ALUNO MT22079131",ra:"MT22079131",rank:36,port:16,m_port:8.0,fisi:4,m_fisi:3.33,quim:12,m_quim:10.0,media:6.89,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"PEDRO COSTA",ra:"MT23122914",rank:37,port:16,m_port:8.0,fisi:7,m_fisi:5.83,quim:7,m_quim:5.83,media:6.8,red:"Não",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"DAVI DIAS",ra:"MT23129877",rank:38,port:18,m_port:9.0,fisi:4,m_fisi:3.33,quim:7,m_quim:5.83,media:6.41,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"MATHEUS SILVA",ra:"MT24135816",rank:39,port:17,m_port:8.5,fisi:7,m_fisi:5.83,quim:3,m_quim:2.5,media:6.28,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"NATHAN SALES",ra:"MT25198839",rank:40,port:13,m_port:6.5,fisi:6,m_fisi:5.0,quim:9,m_quim:7.5,media:6.22,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"LUCAS SANTOS",ra:"MT23127392",rank:41,port:17,m_port:8.5,fisi:4,m_fisi:3.33,quim:7,m_quim:5.83,media:6.19,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"GUILHERME RODRIGUES",ra:"MT23134356",rank:42,port:16,m_port:8.0,fisi:6,m_fisi:5.0,quim:5,m_quim:4.17,media:6.15,red:"Sim",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"RUAN SANTOS",ra:"MT25166455",rank:43,port:13,m_port:6.5,fisi:9,m_fisi:7.5,quim:4,m_quim:3.33,media:6.13,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"LARYSSA COSTA",ra:"MT24141913",rank:44,port:15,m_port:7.5,fisi:7,m_fisi:5.83,quim:4,m_quim:3.33,media:6.02,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"FELIPE VICENTE",ra:"MT22099576",rank:45,port:17,m_port:8.5,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:6.0,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"NATHÁLIA LIMA",ra:"MT22091193",rank:46,port:14,m_port:7.0,fisi:7,m_fisi:5.83,quim:5,m_quim:4.17,media:5.98,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"EDSON ESCOBAR",ra:"MT23111180",rank:47,port:11,m_port:5.5,fisi:7,m_fisi:5.83,quim:8,m_quim:6.67,media:5.87,red:"Não",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"GABRIEL SOUZA",ra:"MT25201021",rank:48,port:14,m_port:7.0,fisi:6,m_fisi:5.0,quim:5,m_quim:4.17,media:5.7,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"KAIO AMARAL",ra:"MT25198086",rank:49,port:10,m_port:5.0,fisi:7,m_fisi:5.83,quim:8,m_quim:6.67,media:5.65,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"ANAÍS SILVA",ra:"MT22058291",rank:50,port:17,m_port:8.5,fisi:4,m_fisi:3.33,quim:4,m_quim:3.33,media:5.63,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"MURILO CORDEIRO",ra:"MT23111545",rank:51,port:11,m_port:5.5,fisi:4,m_fisi:3.33,quim:11,m_quim:9.17,media:5.59,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"LETICIA SILVA",ra:"MT23122484",rank:52,port:13,m_port:6.5,fisi:6,m_fisi:5.0,quim:5,m_quim:4.17,media:5.48,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"ALEX FILHO",ra:"MT23120892",rank:53,port:15,m_port:7.5,fisi:5,m_fisi:4.17,quim:4,m_quim:3.33,media:5.46,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"RENAN JERONIMO",ra:"MT24153462",rank:54,port:14,m_port:7.0,fisi:5,m_fisi:4.17,quim:5,m_quim:4.17,media:5.43,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"IVES FILHO",ra:"MT24154981",rank:55,port:12,m_port:6.0,fisi:6,m_fisi:5.0,quim:5,m_quim:4.17,media:5.26,red:"Sim",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"FRANKLIN JÚNIOR",ra:"MT24146250",rank:56,port:16,m_port:8.0,fisi:2,m_fisi:1.67,quim:6,m_quim:5.0,media:5.22,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"JOSÉ JARDIM",ra:"MT21060264",rank:57,port:10,m_port:5.0,fisi:4,m_fisi:3.33,quim:10,m_quim:8.33,media:5.19,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"ARTHUR PIMENTEL",ra:"MT22094171",rank:58,port:10,m_port:5.0,fisi:6,m_fisi:5.0,quim:7,m_quim:5.83,media:5.19,red:"Não",aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR CAMPOLIM",ra:"MT22089064",rank:59,port:9,m_port:4.5,fisi:6,m_fisi:5.0,quim:8,m_quim:6.67,media:5.15,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"FELIPE SANT'ANNA",ra:"MT24137218",rank:60,port:7,m_port:3.5,fisi:8,m_fisi:6.67,quim:7,m_quim:5.83,media:5.07,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"LEONARDO FERREIRA",ra:"MT22077499",rank:61,port:11,m_port:5.5,fisi:4,m_fisi:3.33,quim:8,m_quim:6.67,media:5.04,red:"Não",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"ERICK BARBOSA",ra:"MT22076517",rank:62,port:13,m_port:6.5,fisi:5,m_fisi:4.17,quim:4,m_quim:3.33,media:5.02,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"ISABELA MECENAS",ra:"MT22084602",rank:63,port:10,m_port:5.0,fisi:6,m_fisi:5.0,quim:6,m_quim:5.0,media:5.0,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GABRIELA ARAUJO",ra:"MT24136715",rank:64,port:14,m_port:7.0,fisi:2,m_fisi:1.67,quim:7,m_quim:5.83,media:4.96,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"ERICK SANTOS",ra:"MT24161465",rank:65,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:10,m_quim:8.33,media:4.96,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"MARIA FIGUEIREDO",ra:"MT25163072",rank:66,port:14,m_port:7.0,fisi:4,m_fisi:3.33,quim:4,m_quim:3.33,media:4.96,red:"Não",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"ELON JÚNIOR",ra:"MT20032975",rank:67,port:13,m_port:6.5,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:4.93,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"CAROLINA LIMA",ra:"MT23124944",rank:68,port:12,m_port:6.0,fisi:6,m_fisi:5.0,quim:3,m_quim:2.5,media:4.89,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"PYETRO OLIVEIRA",ra:"MT22099865",rank:69,port:12,m_port:6.0,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:4.89,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GIOVANNA COSTA",ra:"MT25200353",rank:70,port:16,m_port:8.0,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:4.85,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GAEL CASTRO",ra:"MT22089825",rank:71,port:10,m_port:5.0,fisi:6,m_fisi:5.0,quim:5,m_quim:4.17,media:4.81,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"RAFAEL JABUR",ra:"MT23115033",rank:72,port:10,m_port:5.0,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:4.72,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"LUIS GOMES",ra:"MT24155129",rank:73,port:9,m_port:4.5,fisi:5,m_fisi:4.17,quim:7,m_quim:5.83,media:4.69,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL OLIVEIRA",ra:"MT24148793",rank:74,port:12,m_port:6.0,fisi:3,m_fisi:2.5,quim:6,m_quim:5.0,media:4.61,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"GUILHERME DANTAS",ra:"MT25161282",rank:75,port:11,m_port:5.5,fisi:3,m_fisi:2.5,quim:7,m_quim:5.83,media:4.57,red:"Não",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"NICOLAS ARAUJO",ra:"MT23120413",rank:76,port:16,m_port:8.0,fisi:2,m_fisi:1.67,quim:2,m_quim:1.67,media:4.48,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"FLAVIO LAMEIRA",ra:"MT23122450",rank:77,port:11,m_port:5.5,fisi:2,m_fisi:1.67,quim:8,m_quim:6.67,media:4.48,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"DAVI ALVES",ra:"MT22099329",rank:78,port:10,m_port:5.0,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:4.44,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"JOÃO ALVES",ra:"MT21046685",rank:79,port:10,m_port:5.0,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:4.44,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"WELLINGTON SILVA",ra:"MT22104582",rank:80,port:7,m_port:3.5,fisi:5,m_fisi:4.17,quim:8,m_quim:6.67,media:4.43,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"DOUGLAS OLIVEIRA",ra:"MT25188186",rank:81,port:9,m_port:4.5,fisi:6,m_fisi:5.0,quim:4,m_quim:3.33,media:4.41,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"ANA GRACIANO",ra:"MT25179557",rank:82,port:7,m_port:3.5,fisi:6,m_fisi:5.0,quim:6,m_quim:5.0,media:4.33,red:"Não",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"GUSTAVO ALVES",ra:"MT23133879",rank:83,port:8,m_port:4.0,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:4.28,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"DAVI ALVES",ra:"MT22059356",rank:84,port:7,m_port:3.5,fisi:5,m_fisi:4.17,quim:7,m_quim:5.83,media:4.24,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"DANIEL BARBOSA",ra:"MT24135717",rank:85,port:11,m_port:5.5,fisi:2,m_fisi:1.67,quim:6,m_quim:5.0,media:4.11,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"DANILO CARVALHOSA",ra:"MT24137473",rank:86,port:11,m_port:5.5,fisi:4,m_fisi:3.33,quim:3,m_quim:2.5,media:4.11,red:"Não",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"EDUARDO SILVA",ra:"MT23126196",rank:87,port:7,m_port:3.5,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:4.06,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"JULIANA LOUZADA",ra:"MT25172446",rank:88,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:4.04,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"INGRID NASCIMENTO",ra:"MT22098396",rank:89,port:11,m_port:5.5,fisi:3,m_fisi:2.5,quim:4,m_quim:3.33,media:4.02,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"DAVI SANTOS",ra:"MT22099899",rank:90,port:7,m_port:3.5,fisi:6,m_fisi:5.0,quim:4,m_quim:3.33,media:3.96,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"CAUÃ ESTEVES",ra:"MT25186701",rank:91,port:7,m_port:3.5,fisi:6,m_fisi:5.0,quim:4,m_quim:3.33,media:3.96,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"KEVYNN ALENCAR",ra:"MT26202002",rank:92,port:9,m_port:4.5,fisi:5,m_fisi:4.17,quim:3,m_quim:2.5,media:3.94,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"ANA DIAS",ra:"MT24155079",rank:93,port:11,m_port:5.5,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.93,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"LARA SOUZA",ra:"MT24139537",rank:94,port:10,m_port:5.0,fisi:4,m_fisi:3.33,quim:3,m_quim:2.5,media:3.89,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"NATHALIA RODRIGUES",ra:"MT22091284",rank:95,port:12,m_port:6.0,fisi:3,m_fisi:2.5,quim:2,m_quim:1.67,media:3.87,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"HUGO SANTOS",ra:"MT25190232",rank:96,port:7,m_port:3.5,fisi:5,m_fisi:4.17,quim:5,m_quim:4.17,media:3.87,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"MILLENA FERREIRA",ra:"MT25185935",rank:97,port:6,m_port:3.0,fisi:7,m_fisi:5.83,quim:3,m_quim:2.5,media:3.83,red:"Sim",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"GIOVANNA SILVA",ra:"MT25194291",rank:98,port:8,m_port:4.0,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:3.81,red:"Sim",aprov:0},
+{unidade:"NOVA IGUAÇU",nome:"KAYKE SILVA",ra:"MT23131857",rank:99,port:12,m_port:6.0,fisi:2,m_fisi:1.67,quim:3,m_quim:2.5,media:3.78,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"ARTHUR DAMASCENO",ra:"MT22090658",rank:100,port:7,m_port:3.5,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:3.78,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"VITOR SILVA",ra:"MT25176918",rank:101,port:9,m_port:4.5,fisi:5,m_fisi:4.17,quim:2,m_quim:1.67,media:3.76,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"MARCELA MARTINS",ra:"MT23107410",rank:102,port:11,m_port:5.5,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:3.74,red:"Não",aprov:0},
+{unidade:"",nome:"ALUNO MT261756",ra:"MT261756",rank:103,port:8,m_port:4.0,fisi:5,m_fisi:4.17,quim:3,m_quim:2.5,media:3.72,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"VITOR ALMEIDA",ra:"MT23119241",rank:104,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.48,red:"Sim",aprov:0},
+{unidade:"",nome:"ALUNO MT220*7597",ra:"MT220*7597",rank:105,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.48,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"LUCAS SILVA",ra:"MT22096291",rank:106,port:8,m_port:4.0,fisi:2,m_fisi:1.67,quim:6,m_quim:5.0,media:3.44,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"ANNA SILVA",ra:"MT25199621",rank:107,port:10,m_port:5.0,fisi:3,m_fisi:2.5,quim:2,m_quim:1.67,media:3.43,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GABRIEL DIAS",ra:"MT23119290",rank:108,port:9,m_port:4.5,fisi:3,m_fisi:2.5,quim:3,m_quim:2.5,media:3.39,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"GIOVANNA SIMÕES",ra:"MT23131501",rank:109,port:4,m_port:2.0,fisi:5,m_fisi:4.17,quim:6,m_quim:5.0,media:3.39,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MIGUEL SANTOS",ra:"MT23120058",rank:110,port:6,m_port:3.0,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:3.37,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"GUILHERME PEREIRA",ra:"MT26204297",rank:111,port:5,m_port:2.5,fisi:4,m_fisi:3.33,quim:6,m_quim:5.0,media:3.33,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"MARIA SEABRA",ra:"MT26203224",rank:112,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:3.3,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"MIGUEL GARCEZ",ra:"MT25170994",rank:113,port:9,m_port:4.5,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:3.3,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"LETÍCIA BRAGA",ra:"MT25182957",rank:114,port:9,m_port:4.5,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:3.3,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"GUILHERME PINTO",ra:"MT23132541",rank:115,port:8,m_port:4.0,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.26,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"VINICIUS GUIMARÃES",ra:"MT25201336",rank:116,port:8,m_port:4.0,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.26,red:"Não",aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR SANTOS",ra:"MT25171950",rank:117,port:7,m_port:3.5,fisi:4,m_fisi:3.33,quim:3,m_quim:2.5,media:3.22,red:"Não",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"ALISSON FREITAS",ra:"MT25172107",rank:118,port:7,m_port:3.5,fisi:4,m_fisi:3.33,quim:3,m_quim:2.5,media:3.22,red:"Não",aprov:0},
+{unidade:"BANGU",nome:"LEANDRO SILVA",ra:"MT20028593",rank:119,port:8,m_port:4.0,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:3.07,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GABRIEL LESSA",ra:"MT24141236",rank:120,port:7,m_port:3.5,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.04,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"PEDRO EDUARDO",ra:"MT22104822",rank:121,port:8,m_port:4.0,fisi:3,m_fisi:2.5,quim:2,m_quim:1.67,media:2.98,red:"Não",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"KAYQUE GONÇALVES",ra:"MT25193129",rank:122,port:5,m_port:2.5,fisi:5,m_fisi:4.17,quim:2,m_quim:1.67,media:2.87,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"FLAVIO SOUSA",ra:"MT25181371",rank:123,port:7,m_port:3.5,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:2.85,red:"Não",aprov:0},
+{unidade:"MADUREIRA",nome:"JUAN BARROS",ra:"MT25182163",rank:124,port:4,m_port:2.0,fisi:3,m_fisi:2.5,quim:6,m_quim:5.0,media:2.83,red:"Não",aprov:0},
+{unidade:"TAQUARA",nome:"ARTHUR FRANCISCO",ra:"MT21066006",rank:125,port:7,m_port:3.5,fisi:1,m_fisi:0.83,quim:5,m_quim:4.17,media:2.76,red:"Não",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"MARCELO FILHO",ra:"MT24139396",rank:126,port:4,m_port:2.0,fisi:6,m_fisi:5.0,quim:1,m_quim:0.83,media:2.74,red:"Sim",aprov:0},
+{unidade:"DUQUE DE CAXIAS",nome:"ICARO SANTOS",ra:"MT25196189",rank:127,port:6,m_port:3.0,fisi:3,m_fisi:2.5,quim:3,m_quim:2.5,media:2.72,red:"Não",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"MATHEUS MACEDO",ra:"MT22089114",rank:128,port:6,m_port:3.0,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:2.63,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"ANA OLIVEIRA",ra:"MT26204982",rank:129,port:5,m_port:2.5,fisi:2,m_fisi:1.67,quim:5,m_quim:4.17,media:2.59,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"CARLOS PEREIRA",ra:"MT23125107",rank:130,port:6,m_port:3.0,fisi:1,m_fisi:0.83,quim:5,m_quim:4.17,media:2.54,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"RAFAEL REIS",ra:"MT24136228",rank:131,port:3,m_port:1.5,fisi:3,m_fisi:2.5,quim:5,m_quim:4.17,media:2.43,red:"Não",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"JOÃO FELIZARDO",ra:"MT24147399",rank:132,port:4,m_port:2.0,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:2.19,red:"Não",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MARCUS PEREIRA",ra:"MT25171505",rank:133,port:5,m_port:2.5,fisi:1,m_fisi:0.83,quim:4,m_quim:3.33,media:2.13,red:"Não",aprov:0},
+{unidade:"MADUREIRA",nome:"RANIEL LIMA",ra:"MT25186867",rank:134,port:1,m_port:0.5,fisi:4,m_fisi:3.33,quim:4,m_quim:3.33,media:2.07,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"THIAGO JUNIOR",ra:"MT23112485",rank:135,port:5,m_port:2.5,fisi:2,m_fisi:1.67,quim:2,m_quim:1.67,media:2.04,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"MATHEUS MANGIA",ra:"MT23131980",rank:136,port:3,m_port:1.5,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:1.96,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"LUCAS REZENDE",ra:"MT25197401",rank:137,port:3,m_port:1.5,fisi:2,m_fisi:1.67,quim:3,m_quim:2.5,media:1.78,red:"Não",aprov:0}
+];
+
 const RAW_GERAL = [
 {unidade:"TAQUARA",nome:"RAFAEL FERNANDES",ra:"MT24160046",rank:1,port:14,m_port:7.0,mat:20,m_mat:10.0,ing:12,m_ing:10.0,fisi:7,m_fisi:5.83,quim:7,m_quim:5.83,his:9,m_his:7.5,geo:9,m_geo:7.5,media:7.86,red:"Sim",aprov:1},
 {unidade:"DUQUE DE CAXIAS",nome:"MARCELO FILHO",ra:"MT24139396",rank:2,port:10,m_port:5.0,mat:17,m_mat:8.5,ing:12,m_ing:10.0,fisi:8,m_fisi:6.67,quim:9,m_quim:7.5,his:11,m_his:9.17,geo:10,m_geo:8.33,media:7.7,red:"Sim",aprov:1},
@@ -1071,7 +1267,12 @@ function showSug(){
       [2º Dia] #${a.rank}º — ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'—'}</span>
       ${a.aprov?'<span style="color:#16a34a;font-size:11px">✓ Aprovado</span>':'<span style="color:#dc2626;font-size:11px">✗ Reprovado</span>'}
     </div>`);
-  d.innerHTML=[...r1,...r2].join('');
+  const r3=TS3.list.filter(a=>a.nome.toLowerCase().includes(v)).slice(0,4).map(a=>`
+    <div class="sug-item" onclick="openAlunoS3('${a.nome.replace(/'/g,"\\'")}')">
+      [3º Sim] #${a.rank}º — ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'—'}</span>
+      ${a.aprov?'<span style="color:#16a34a;font-size:11px">✓ Aprovado</span>':'<span style="color:#dc2626;font-size:11px">✗ Reprovado</span>'}
+    </div>`);
+  d.innerHTML=[...r1,...r2,...r3].join('');
 }
 
 function buscar(){
@@ -1125,7 +1326,7 @@ function confirmarRA(){
   }
 
   const nome=modal.dataset.nome;
-  const lista=dia==='2'?T2.list:T.list;
+  const lista=dia==='2'?T2.list:dia==='s3'?TS3.list:T.list;
   const candidato=lista.find(a=>a.nome===nome);
   if(!candidato){return;}
   const esperado=(candidato.ra||'').toUpperCase();
@@ -1135,7 +1336,16 @@ function confirmarRA(){
     return;
   }
   fecharRAModal();
-  if(dia==='2'){
+  if(dia==='s3'){
+    atualS3=candidato;
+    secaoOrigem='rankingS3';
+    document.getElementById('dashNome').textContent=atualS3.nome;
+    document.getElementById('dashInfo').textContent=`#${atualS3.rank}º · 3º Simulado 1º Dia · ${atualS3.unidade||'—'} · MP ${atualS3.media.toFixed(2)} · ${atualS3.aprov?'✓ Aprovado':'✗ '+atualS3.motivo}`;
+    const dd=document.getElementById('destDiv');
+    if(atualS3.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atualS3.rank}º — 3º Simulado`;}
+    else dd.style.display='none';
+    buildNotasS3();buildGraficoS3();buildRelatorioS3();buildChanceS3();buildPlanoS3();
+  } else if(dia==='2'){
     atual2=candidato;
     secaoOrigem='ranking2';
     document.getElementById('dashNome').textContent=atual2.nome;
@@ -1526,7 +1736,7 @@ function voltar(){
   document.querySelectorAll('.section').forEach(x=>x.classList.remove('active'));
   document.getElementById(secaoOrigem+'Section').classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  const navMap={rankingGeral:'navRankingGeral',ranking:'navRanking',ranking2:'navRanking2',busca:'navBusca'};
+  const navMap={rankingGeral:'navRankingGeral',ranking:'navRanking',ranking2:'navRanking2',rankingS3:'navRankingS3',busca:'navBusca'};
   document.getElementById(navMap[secaoOrigem]||'navRanking').classList.add('active');
 }
 
@@ -2633,6 +2843,288 @@ function buildPlanoGeral(){
     </div>`:''}
   </div>`;
 }
+
+// ═══════════════════════════════════════════════════════
+// 3º SIMULADO 1º DIA — LÓGICA
+// Medianas: Port 5,5 | Fís 3,33 | Quím 5,0
+// ═══════════════════════════════════════════════════════
+function buildTurmaS3(raw){
+  raw.forEach(a=>{
+    a.ok_port = a.m_port >= 5.5;
+    a.ok_fisi = a.m_fisi >= 3.33;
+    a.ok_quim = a.m_quim >= 5.0;
+    a.ok_red  = a.red === 'Sim';
+    a.aprov   = a.ok_port && a.ok_fisi && a.ok_quim && a.ok_red;
+    a.gtot    = a.port + a.fisi + a.quim;
+    const f=[];
+    if(!a.ok_port) f.push('Português');
+    if(!a.ok_fisi) f.push('Física');
+    if(!a.ok_quim) f.push('Química');
+    if(!a.ok_red)  f.push('Redação');
+    a.motivo = f.length ? f.join(', ')+' abaixo da mediana' : '';
+  });
+  const apv=raw.filter(a=>a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const rep=raw.filter(a=>!a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rank=i+1);
+  const avg=k=>sorted.reduce((s,x)=>s+(x[k]||0),0)/sorted.length;
+  return {list:sorted,avgs:{port:avg('m_port'),fisi:avg('m_fisi'),quim:avg('m_quim'),media:avg('media')}};
+}
+const TS3=buildTurmaS3(RAW_S3D1);
+(()=>{
+  const sel=document.getElementById('uniSelRkS3');
+  [...new Set(TS3.list.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+let fRkS3='todos', atualS3=null;
+
+function renderRankingS3(){
+  const q=(document.getElementById('searchRkS3').value||'').toLowerCase();
+  let lst=TS3.list.filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fRkS3==='aprov')  lst=lst.filter(a=>a.aprov);
+  if(fRkS3==='reprov') lst=lst.filter(a=>!a.aprov);
+  if(fRkS3==='unidade'){const v=document.getElementById('uniSelRkS3').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TS3.list.length, apvN=TS3.list.filter(a=>a.aprov).length;
+  document.getElementById('totalRkS3').textContent=tot;
+  document.getElementById('aprovRkS3').textContent=apvN;
+  document.getElementById('reprovRkS3').textContent=tot-apvN;
+  document.getElementById('bodyRkS3').innerHTML=lst.map(a=>{
+    const p=a.rank,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprov?'<span class="chip chip-aprov">✓ Aprovado</span>':'<span class="chip chip-reprov">✗ Reprovado</span>';
+    return `<tr class="${rc}" onclick="openAlunoS3('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'—'}${!a.aprov?' · '+a.motivo:''}</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_port?'#16a34a':'#dc2626'}">${a.port}<span style="font-size:11px;color:var(--text3)">/20</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_fisi?'#16a34a':'#dc2626'}">${a.fisi}<span style="font-size:11px;color:var(--text3)">/12</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_quim?'#16a34a':'#dc2626'}">${a.quim}<span style="font-size:11px;color:var(--text3)">/12</span></td>
+      <td style="font-size:26px;font-weight:900;text-align:center;color:var(--army)">${a.media.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('statsRkS3').innerHTML=`
+    <div class="stat-item"><div class="s-label">Total</div><div class="s-val">${tot}</div><div class="s-hint">participantes</div></div>
+    <div class="stat-item"><div class="s-label">Aprovados</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/tot*100)}%</div></div>
+    <div class="stat-item"><div class="s-label">Reprovados</div><div class="s-val" style="color:var(--red)">${tot-apvN}</div><div class="s-hint">${Math.round((tot-apvN)/tot*100)}%</div></div>
+    <div class="stat-item"><div class="s-label">Maior MP</div><div class="s-val" style="color:var(--army)">${TS3.list[0]?TS3.list[0].media.toFixed(2):0}</div><div class="s-hint">de 10,0</div></div>
+    <div class="stat-item"><div class="s-label">Média Português</div><div class="s-val">${TS3.avgs.port.toFixed(1)}</div><div class="s-hint">mediana: 5,5</div></div>
+    <div class="stat-item"><div class="s-label">Média Física</div><div class="s-val">${TS3.avgs.fisi.toFixed(1)}</div><div class="s-hint">mediana: 3,33</div></div>
+    <div class="stat-item"><div class="s-label">Média Química</div><div class="s-val">${TS3.avgs.quim.toFixed(1)}</div><div class="s-hint">mediana: 5,0</div></div>
+    <div class="stat-item"><div class="s-label">Média Geral (MP)</div><div class="s-val">${TS3.avgs.media.toFixed(1)}</div><div class="s-hint">de 10</div></div>
+  `;
+}
+function setFRkS3(f,btn){
+  fRkS3=f;
+  document.getElementById('rankingS3Section').querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('uniWrapRkS3').style.display=f==='unidade'?'block':'none';
+  renderRankingS3();
+}
+function openAlunoS3(nome){
+  const candidato=TS3.list.find(a=>a.nome===nome);
+  if(!candidato)return;
+  const modal=document.getElementById('raModal');
+  document.getElementById('raInput').value='';
+  document.getElementById('raError').style.display='none';
+  modal.dataset.nome=nome;
+  modal.dataset.dia='s3';
+  modal.style.display='flex';
+  setTimeout(()=>document.getElementById('raInput').focus(),100);
+}
+function buildNotasS3(){
+  const a=atualS3;
+  const portPct=+(a.port/20*100).toFixed(0);
+  const fisiPct=+(a.fisi/12*100).toFixed(0);
+  const quimPct=+(a.quim/12*100).toFixed(0);
+  document.getElementById('pNotas').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Resumo — 3º Simulado · 1º Dia</h2></div>
+    <p class="card-sub">14/03/2026 · Medianas: Port 5,5 · Fís 3,33 · Quím 5,0</p>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="s-label">Classificação</div><div class="s-val" style="color:var(--army)">#${a.rank}º</div><div class="s-hint">de ${TS3.list.length} alunos</div></div>
+      <div class="stat-item"><div class="s-label">Total de Acertos</div><div class="s-val">${a.gtot}</div><div class="s-hint">de 44 questões</div></div>
+      <div class="stat-item"><div class="s-label">Média Ponderada</div><div class="s-val" style="color:${a.aprov?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div><div class="s-hint">corte por medianas</div></div>
+      <div class="stat-item"><div class="s-label">Redação</div><div class="s-val" style="font-size:28px;padding-top:4px">${a.ok_red?'✅':'❌'}</div><div class="s-hint">${a.ok_red?'Entregue':'Não entregue'}</div></div>
+      <div class="stat-item"><div class="s-label">Resultado</div><div class="s-val" style="font-size:28px;padding-top:4px">${a.aprov?'✅':'❌'}</div><div class="s-hint">${a.aprov?'Aprovado':a.motivo||'Reprovado'}</div></div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📐 Desempenho por Disciplina</h2></div>
+    <div class="disc-grid">
+      <div class="disc-card ${a.ok_port?'pass':'fail'}">
+        <div class="dc-name">Português</div><div class="dc-val">${a.port}</div>
+        <div class="dc-max">de 20 — nota ${a.m_port.toFixed(2)} — mediana 5,5</div>
+        ${a.ok_port?'<span class="chip chip-aprov">✓ Acima</span>':'<span class="chip chip-reprov">✗ Abaixo</span>'}
+      </div>
+      <div class="disc-card ${a.ok_fisi?'pass':'fail'}">
+        <div class="dc-name">Física</div><div class="dc-val">${a.fisi}</div>
+        <div class="dc-max">de 12 — nota ${a.m_fisi.toFixed(2)} — mediana 3,33</div>
+        ${a.ok_fisi?'<span class="chip chip-aprov">✓ Acima</span>':'<span class="chip chip-reprov">✗ Abaixo</span>'}
+      </div>
+      <div class="disc-card ${a.ok_quim?'pass':'fail'}">
+        <div class="dc-name">Química</div><div class="dc-val">${a.quim}</div>
+        <div class="dc-max">de 12 — nota ${a.m_quim.toFixed(2)} — mediana 5,0</div>
+        ${a.ok_quim?'<span class="chip chip-aprov">✓ Acima</span>':'<span class="chip chip-reprov">✗ Abaixo</span>'}
+      </div>
+      <div class="disc-card ${a.ok_red?'pass':'fail'}">
+        <div class="dc-name">Redação</div><div class="dc-val" style="font-size:48px">${a.ok_red?'✅':'❌'}</div>
+        <div class="dc-max">Eliminatória</div>
+        ${a.ok_red?'<span class="chip chip-aprov">✓ Entregue</span>':'<span class="chip chip-reprov">✗ Não entregue</span>'}
+      </div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>📊 Comparativo com a Turma</h2></div>
+    <table class="dtable">
+      <thead><tr><th>Disciplina</th><th>Acertos</th><th>% Acerto</th><th>Média Turma</th><th>Mediana</th><th>Situação</th></tr></thead>
+      <tbody>
+        ${[['Português',a.port,portPct,a.ok_port,TS3.avgs.port,a.m_port,'/20',5.5],
+           ['Física',a.fisi,fisiPct,a.ok_fisi,TS3.avgs.fisi,a.m_fisi,'/12',3.33],
+           ['Química',a.quim,quimPct,a.ok_quim,TS3.avgs.quim,a.m_quim,'/12',5.0],
+        ].map(([n,ac,pct,ok,avg,nota,tot,med])=>`
+          <tr ${!ok?'style="background:#fff8f8"':''}>
+            <td>${n}</td><td style="font-weight:800">${ac}${tot}</td>
+            <td><span class="badge ${pBadge(pct)}">${pct}%</span></td>
+            <td>${avg.toFixed(2)}</td>
+            <td style="font-weight:900;color:${ok?'#16a34a':'#dc2626'}">${med} ${ok?'✓':'✗'}</td>
+            <td>${pLabel(pct)}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+function buildGraficoS3(){
+  const a=atualS3,topN=10;
+  const topList=TS3.list.slice(0,topN);
+  const tP=topList.reduce((s,x)=>s+x.m_port,0)/topN;
+  const tF=topList.reduce((s,x)=>s+x.m_fisi,0)/topN;
+  const tQ=topList.reduce((s,x)=>s+x.m_quim,0)/topN;
+  document.getElementById('pGrafico').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>📈 Comparativo — ${a.nome.split(' ')[0]} vs Turma</h2></div>
+    <div class="chart-wrap"><canvas id="barChartS3"></canvas></div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>🕸️ Radar — ${a.nome.split(' ')[0]} vs Top ${topN}</h2></div>
+    <div class="chart-wrap" style="height:380px"><canvas id="radarChartS3"></canvas></div>
+  </div>`;
+  if(chartObj){try{Object.values(chartObj).forEach(c=>c.destroy());}catch(e){}}
+  chartObj={};
+  setTimeout(()=>{
+    const ctx1=document.getElementById('barChartS3').getContext('2d');
+    chartObj.bar=new Chart(ctx1,{type:'bar',data:{labels:['Português','Física','Química'],datasets:[
+      {label:'Aluno',data:[a.m_port,a.m_fisi,a.m_quim],backgroundColor:['rgba(45,74,30,.8)','rgba(45,74,30,.65)','rgba(45,74,30,.5)'],borderRadius:8},
+      {label:'Média Turma',data:[TS3.avgs.port,TS3.avgs.fisi,TS3.avgs.quim],backgroundColor:'rgba(107,124,63,.4)',borderRadius:8},
+      {label:'Mediana (corte)',data:[5.5,3.33,5.0],backgroundColor:'rgba(220,38,38,.15)',borderWidth:2,borderColor:'rgba(220,38,38,.6)',borderRadius:8}
+    ]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'}},scales:{y:{min:0,max:10}}}});
+    const ctx2=document.getElementById('radarChartS3').getContext('2d');
+    chartObj.radar=new Chart(ctx2,{type:'radar',data:{labels:['Português','Física','Química'],datasets:[
+      {label:a.nome.split(' ')[0],data:[+(a.port/20*100).toFixed(1),+(a.fisi/12*100).toFixed(1),+(a.quim/12*100).toFixed(1)],borderColor:'#2d4a1e',backgroundColor:'rgba(45,74,30,.15)',borderWidth:2,pointBackgroundColor:'#2d4a1e'},
+      {label:'Top '+topN,data:[+(tP/10*100).toFixed(1),+(tF/10*100).toFixed(1),+(tQ/10*100).toFixed(1)],borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.1)',borderWidth:2,pointBackgroundColor:'#d97706'}
+    ]},options:{responsive:true,maintainAspectRatio:false,scales:{r:{min:0,max:100,ticks:{stepSize:20},pointLabels:{font:{size:13,weight:'700'}}}},plugins:{legend:{position:'top'}}}});
+  },80);
+}
+function buildRelatorioS3(){
+  const a=atualS3;
+  const discs=[
+    {nome:'Português',acertos:a.port,total:20,nota:a.m_port,peso:2,  ok:a.ok_port,mediana:5.5},
+    {nome:'Física',   acertos:a.fisi,total:12,nota:a.m_fisi,peso:1.5,ok:a.ok_fisi,mediana:3.33},
+    {nome:'Química',  acertos:a.quim,total:12,nota:a.m_quim,peso:1,  ok:a.ok_quim,mediana:5.0},
+  ];
+  discs.forEach(d=>{
+    d.pct=+(d.acertos/d.total*100).toFixed(1);
+    d.ic=d.pct>=70?'alto':d.pct>=50?'medio':'baixo';
+    d.icLabel=d.ic==='alto'?'🟢 IC ALTO':d.ic==='medio'?'🟡 IC MÉDIO':'🔴 IC BAIXO';
+    d.icClass=d.ic==='alto'?'ic-alto':d.ic==='medio'?'ic-medio':'ic-baixo';
+    d.scorePond=+(d.pct*d.peso).toFixed(2);
+    d.gapMediana=+(d.nota-d.mediana).toFixed(2);
+    const queda=d.gapMediana<0?Math.abs(d.gapMediana)*10:0;
+    d.roiBruto=+(queda*d.peso).toFixed(1);
+    d.fr=d.ic==='alto'?0.80:d.ic==='medio'?0.60:0.35;
+    d.roiAjustado=+(d.roiBruto*d.fr).toFixed(1);
+    d.roiLabel=d.roiAjustado>=30?'Alta Prioridade':d.roiAjustado>=10?'Média Prioridade':'Estável';
+    d.roiClass=d.roiAjustado>=30?'roi-high':d.roiAjustado>=10?'roi-mid':'roi-low';
+  });
+  const scoreTotal=discs.reduce((s,d)=>s+d.scorePond,0);
+  const scoreMax=100*discs.reduce((s,d)=>s+d.peso,0);
+  const scorePct=+(scoreTotal/scoreMax*100).toFixed(1);
+  discs.forEach(d=>{d.impactoPct=scoreTotal>0?+(d.scorePond/scoreTotal*100).toFixed(1):0;});
+  const pctGeral=+(a.gtot/44*100).toFixed(1);
+  const icGeral=pctGeral>=70?'alto':pctGeral>=50?'medio':'baixo';
+  const icGeralClass=icGeral==='alto'?'ic-alto':icGeral==='medio'?'ic-medio':'ic-baixo';
+  const icGeralLabel=icGeral==='alto'?'🟢 IC ALTO':icGeral==='medio'?'🟡 IC MÉDIO':'🔴 IC BAIXO';
+  const discsPorROI=[...discs].sort((a,b)=>b.roiAjustado-a.roiAjustado);
+  document.getElementById('pRelatorio').innerHTML=`
+  <div style="padding:10px 16px;background:#f3f5e8;border:1px solid #c5d19b;border-left:4px solid var(--olive);border-radius:9px;font-size:12px;font-weight:700;color:#4a5a1e;margin-bottom:16px">
+    📌 <strong>3º Simulado EsPCEx · 1º Dia · 14/03/2026</strong> — Port×2 · Fís×1,5 · Quím×1 · Medianas: 5,5 / 3,33 / 5,0
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>🔵 Índice de Confiabilidade (IC)</h2></div>
+    ${discs.map(d=>`<div class="disc-rel-row">
+      <div class="disc-rel-name">${d.nome}</div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px"><span>${d.acertos}/${d.total}</span><span>${d.pct}%</span></div>
+        <div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:${d.pct}%;background:${d.ic==='alto'?'#16a34a':d.ic==='medio'?'#d97706':'#dc2626'}"></div></div>
+      </div>
+      <span class="ic-badge ${d.icClass}">${d.icLabel}</span>
+      <div style="font-size:11px;color:var(--text2);font-weight:600">${d.ic==='alto'?'Sólido':'Precisa melhorar'}</div>
+    </div>`).join('')}
+    <div style="margin-top:14px;padding:12px 16px;border-radius:10px;background:var(--bg);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px">
+      <span style="font-size:13px;font-weight:800;color:var(--army)">IC Geral</span>
+      <div style="display:flex;align-items:center;gap:10px">
+        <span style="font-size:13px;font-weight:700;color:var(--text2)">${pctGeral}% (${a.gtot}/44)</span>
+        <span class="ic-badge ${icGeralClass}">${icGeralLabel}</span>
+      </div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>⚖️ Score Ponderado</h2></div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:14px">
+      <div class="stat-item"><div class="s-label">Score Total</div><div class="s-val" style="color:var(--army)">${scoreTotal.toFixed(1)}</div><div class="s-hint">de ${scoreMax.toFixed(0)}</div></div>
+      <div class="stat-item"><div class="s-label">% Máximo</div><div class="s-val" style="color:${scorePct>=70?'#16a34a':scorePct>=50?'#d97706':'#dc2626'}">${scorePct}%</div></div>
+      ${discs.map(d=>`<div class="stat-item"><div class="s-label">${d.nome} ×${d.peso}</div><div class="s-val" style="font-size:20px">${d.scorePond}</div><div class="s-hint">${d.impactoPct}%</div></div>`).join('')}
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>🎯 ROI Pedagógico</h2></div>
+    ${discsPorROI.map((d,i)=>`<div class="disc-rel-row" style="grid-template-columns:28px 130px 1fr 80px 110px">
+      <span style="font-size:15px;font-weight:900;color:var(--text3)">${i+1}º</span>
+      <div class="disc-rel-name">${d.nome}</div>
+      <div>
+        <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:4px"><span>Gap: ${d.gapMediana>=0?'+':''}${(-d.gapMediana).toFixed(2)}</span><span>FR=${d.fr}·×${d.peso}</span></div>
+        <div class="pct-bar-wrap"><div class="pct-bar-fill" style="width:${Math.min(100,d.roiAjustado)}%;background:${d.roiAjustado>=30?'#dc2626':d.roiAjustado>=10?'#d97706':'#16a34a'}"></div></div>
+      </div>
+      <span style="font-size:16px;font-weight:900;color:var(--army);text-align:center">${d.roiAjustado}</span>
+      <span class="roi-pill ${d.roiClass}">${d.roiLabel}</span>
+    </div>`).join('')}
+  </div>`;
+}
+function buildChanceS3(){
+  const a=atualS3;
+  const discs=[
+    {nome:'Português',nota:a.m_port,ok:a.ok_port,mediana:5.5,peso:2},
+    {nome:'Física',   nota:a.m_fisi,ok:a.ok_fisi,mediana:3.33,peso:1.5},
+    {nome:'Química',  nota:a.m_quim,ok:a.ok_quim,mediana:5.0,peso:1},
+  ];
+  const diff=+(a.media-CORTE_ESPCEX).toFixed(2);
+  const pct=Math.min(100,Math.max(0,+(a.media/CORTE_ESPCEX*100).toFixed(1)));
+  const cor=pct>=100?'#16a34a':pct>=80?'#d97706':'#dc2626';
+  document.getElementById('pChance').innerHTML=_chanceHTML(a.nome,a.media,CORTE_ESPCEX,diff,pct,cor,discs,a.ok_red,'3º Simulado 1º Dia');
+}
+function buildPlanoS3(){
+  const a=atualS3;
+  const discs=[
+    {nome:'Português',nota:a.m_port,ok:a.ok_port,mediana:5.5, peso:2,  gap:+(5.5 -a.m_port).toFixed(2),total:20},
+    {nome:'Física',   nota:a.m_fisi,ok:a.ok_fisi,mediana:3.33,peso:1.5,gap:+(3.33-a.m_fisi).toFixed(2),total:12},
+    {nome:'Química',  nota:a.m_quim,ok:a.ok_quim,mediana:5.0, peso:1,  gap:+(5.0 -a.m_quim).toFixed(2),total:12},
+  ];
+  document.getElementById('pPlano').innerHTML=_planoHTML(a.nome,discs,a.media,a.ok_red,'3º Simulado 1º Dia','14/03/2026');
+}
+
+renderRankingS3();
 </script>
 
 <!-- Modal de confirmação de matrícula -->
