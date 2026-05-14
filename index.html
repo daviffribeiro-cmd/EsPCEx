@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
@@ -234,7 +234,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
       <div class="nav-group">
         <button class="nav-group-btn" id="navG4" onclick="toggleGroup('g4sub',this)">&#127894; 4&deg; Sim &#9660;</button>
         <div class="nav-sub" id="g4sub">
+          <button class="nav-btn" id="navGeralS4" onclick="goSec('geralS4',this)">&#127919; Geral</button>
           <button class="nav-btn" id="navRankingS5D1" onclick="goSec('rankingS5D1',this)">&#128203; 1&deg; Dia &middot; 18/04</button>
+          <button class="nav-btn" id="navRankingS5D2" onclick="goSec('rankingS5D2',this)">&#128203; 2&deg; Dia &middot; 25/04</button>
+        </div>
+      </div>
+      <div class="nav-group">
+        <button class="nav-group-btn" id="navG5" onclick="toggleGroup('g5sub',this)">&#127894; 5&deg; Sim &#9660;</button>
+        <div class="nav-sub" id="g5sub">
+          <button class="nav-btn" id="navGeralS5" onclick="goSec('geralS5',this)">&#127919; Geral</button>
+          <button class="nav-btn" id="navRankingS6D1" onclick="goSec('rankingS6D1',this)">&#128203; 1&deg; Dia &middot; 02/05</button>
+          <button class="nav-btn" id="navRankingS6D2" onclick="goSec('rankingS6D2',this)">&#128203; 2&deg; Dia &middot; 09/05</button>
         </div>
       </div>
       <button class="nav-btn" id="navBusca" onclick="goSec('busca',this)">&#128269; Buscar Aluno</button>
@@ -746,6 +756,239 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
         <tbody id="bodyRkS5D1"></tbody>
       </table>
       <div class="stat-grid" id="statsRkS5D1" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+<!-- RANKING 5Â° Simulado 2Â° DIA â€” 25/04 -->
+<div id="rankingS5D2Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>&#127942; Ranking EsPCEx &#8212; 5&#186; Simulado &#8212; 25/04/2026 &#8212; 2&#186; Dia</h1>
+      <p>Classifica&#231;&#227;o nas disciplinas do 2&#186; Dia: Matem&#225;tica, Ingl&#234;s, Hist&#243;ria, Geografia + Reda&#231;&#227;o. Medianas: Mat 2,50 &#8226; Ing 4,17 &#8226; His 4,17 &#8226; Geo 4,17. Clique no aluno para relat&#243;rio.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = acima da mediana em todas + reda&#231;&#227;o</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo da mediana em ao menos 1</div>
+      <div class="legend-item">&#128200; Medianas 2&#186; Dia: Mat 2,50 &#8226; Ing 4,17 &#8226; His 4,17 &#8226; Geo 4,17</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 5&#186; Simulado &#8212; 2&#186; Dia</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalRkS5D2">0</span> &#183; Aprovados: <span id="aprovRkS5D2" style="color:var(--green);font-weight:700">0</span> &#183; Reprovados: <span id="reprovRkS5D2" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchRkS5D2" placeholder="&#128269; Buscar pelo nome..." oninput="renderRankingS5D2()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFRkS5D2('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFRkS5D2('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFRkS5D2('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFRkS5D2('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapRkS5D2" style="display:none;margin-bottom:14px">
+        <select id="uniSelRkS5D2" onchange="renderRankingS5D2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">- Todas as unidades -</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Matem&#225;tica</th><th>Ingl&#234;s</th><th>Hist&#243;ria</th><th>Geografia</th>
+          <th>Red.</th><th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th><th>Status</th>
+        </tr></thead>
+        <tbody id="bodyRkS5D2"></tbody>
+      </table>
+      <div class="stat-grid" id="statsRkS5D2" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RANKING 6Â° Simulado 1Â° DIA â€” 02/05 -->
+<div id="rankingS6D1Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>&#127942; Ranking EsPCEx &#8212; 6&#186; Simulado &#8212; 02/05/2026 &#8212; 1&#186; Dia</h1>
+      <p>Classifica&#231;&#227;o em Portugu&#234;s, F&#237;sica e Qu&#237;mica. Medianas: Port 3,00 &#8226; F&#237;s 1,67 &#8226; Qu&#237;m 2,50.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = acima da mediana em todas + reda&#231;&#227;o</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo da mediana em ao menos 1</div>
+      <div class="legend-item">&#128200; Medianas: Portugu&#234;s 3,00 &#8226; F&#237;sica 1,67 &#8226; Qu&#237;mica 2,50</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 6&#186; Simulado &#8212; 1&#186; Dia</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalRkS6D1">0</span> &#183; Aprovados: <span id="aprovRkS6D1" style="color:var(--green);font-weight:700">0</span> &#183; Reprovados: <span id="reprovRkS6D1" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchRkS6D1" placeholder="&#128269; Buscar pelo nome..." oninput="renderRankingS6D1()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFRkS6D1('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFRkS6D1('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFRkS6D1('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFRkS6D1('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapRkS6D1" style="display:none;margin-bottom:14px">
+        <select id="uniSelRkS6D1" onchange="renderRankingS6D1()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">- Todas as unidades -</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Portugu&#234;s</th><th>F&#237;sica</th><th>Qu&#237;mica</th>
+          <th>Red.</th><th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th><th>Status</th>
+        </tr></thead>
+        <tbody id="bodyRkS6D1"></tbody>
+      </table>
+      <div class="stat-grid" id="statsRkS6D1" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RANKING 6Â° Simulado 2Â° DIA â€” 09/05 (combinado) -->
+<div id="rankingS6D2Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>&#127942; Ranking EsPCEx &#8212; 6&#186; Simulado &#8212; 02/05+09/05/2026 &#8212; 2&#186; Dia</h1>
+      <p>Classifica&#231;&#227;o do 2&#186; Dia: Matem&#225;tica, Ingl&#234;s, Hist&#243;ria, Geografia + Reda&#231;&#227;o (09/05). Medianas: Mat 2,50 &#8226; Ing 4,17 &#8226; His 4,17 &#8226; Geo 4,17. Clique no aluno para relat&#243;rio.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = acima da mediana em todas + reda&#231;&#227;o</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo da mediana em ao menos 1</div>
+      <div class="legend-item">&#128200; Medianas 2&#186; Dia: Mat 2,50 &#8226; Ing 4,17 &#8226; His 4,17 &#8226; Geo 4,17</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 6&#186; Simulado &#8212; 2&#186; Dia (Combinado)</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalRkS6D2">0</span> &#183; Aprovados: <span id="aprovRkS6D2" style="color:var(--green);font-weight:700">0</span> &#183; Reprovados: <span id="reprovRkS6D2" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchRkS6D2" placeholder="&#128269; Buscar pelo nome..." oninput="renderRankingS6D2()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFRkS6D2('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFRkS6D2('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFRkS6D2('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFRkS6D2('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapRkS6D2" style="display:none;margin-bottom:14px">
+        <select id="uniSelRkS6D2" onchange="renderRankingS6D2()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">- Todas as unidades -</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Matem&#225;tica</th><th>Ingl&#234;s</th><th>Hist&#243;ria</th><th>Geografia</th>
+          <th>Red.</th><th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th><th>Status</th>
+        </tr></thead>
+        <tbody id="bodyRkS6D2"></tbody>
+      </table>
+      <div class="stat-grid" id="statsRkS6D2" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+<!-- RANKING GERAL 4Â° Simulado â€” usa dados combinados s5d2 (25/04) -->
+<div id="geralS4Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>&#127919; Ranking Geral EsPCEx &#8212; 4&#186; Simulado (7 Disciplinas)</h1>
+      <p>Ranking combinado: Por/F&#237;s/Qu&#237; do 1&#186; Dia (18/04) + Mat/Ing/His/Geo do 2&#186; Dia (25/04). Aprova&#231;&#227;o em todas as 7 medianas + reda&#231;&#227;o.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = acima de todas as medianas + reda&#231;&#227;o</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo em ao menos 1</div>
+      <div class="legend-item">&#128200; Medianas: Por 4,50 &#8226; Mat 2,50 &#8226; Ing 4,17 &#8226; F&#237;s 3,33 &#8226; Qu&#237;m 3,33 &#8226; His 4,17 &#8226; Geo 4,17</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 4&#186; Simulado &#8212; Geral</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalGeralS4">0</span> &#183; Aprovados: <span id="aprovGeralS4" style="color:var(--green);font-weight:700">0</span> &#183; Reprovados: <span id="reprovGeralS4" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchGeralS4" placeholder="&#128269; Buscar pelo nome..." oninput="renderGeralS4()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFGeralS4('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFGeralS4('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFGeralS4('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFGeralS4('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapGeralS4" style="display:none;margin-bottom:14px">
+        <select id="uniSelGeralS4" onchange="renderGeralS4()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">- Todas as unidades -</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Por</th><th>Mat</th><th>Ing</th><th>F&#237;s</th><th>Qu&#237;</th><th>His</th><th>Geo</th>
+          <th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th><th>Status</th>
+        </tr></thead>
+        <tbody id="bodyGeralS4"></tbody>
+      </table>
+      <div class="stat-grid" id="statsGeralS4" style="margin-top:20px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- RANKING GERAL 5Â° Simulado â€” usa dados combinados s6d2 (02/05+09/05) -->
+<div id="geralS5Section" class="section">
+  <div class="page-wrap fade-in">
+    <div class="page-intro">
+      <h1>&#127919; Ranking Geral EsPCEx &#8212; 5&#186; Simulado (7 Disciplinas)</h1>
+      <p>Ranking combinado: Por/F&#237;s/Qu&#237; do 1&#186; Dia (02/05) + Mat/Ing/His/Geo do 2&#186; Dia (09/05). Aprova&#231;&#227;o em todas as 7 medianas + reda&#231;&#227;o.</p>
+    </div>
+    <div class="legend-box">
+      <strong>Como ler:</strong>
+      <div class="legend-item"><div class="legend-dot" style="background:#fbbf24"></div>Top 3 em dourado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#16a34a"></div>&#10003; Aprovado = acima de todas as medianas + reda&#231;&#227;o</div>
+      <div class="legend-item"><div class="legend-dot" style="background:#dc2626"></div>&#10007; Reprovado = abaixo em ao menos 1</div>
+      <div class="legend-item">&#128200; Medianas: Por 3,00 &#8226; Mat 2,50 &#8226; Ing 4,17 &#8226; F&#237;s 1,67 &#8226; Qu&#237;m 2,50 &#8226; His 4,17 &#8226; Geo 4,17</div>
+    </div>
+    <div class="ranking-card">
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:18px">
+        <div>
+          <h2 style="font-size:18px;font-weight:900;color:var(--army);margin-bottom:2px">EsPCEx 5&#186; Simulado &#8212; Geral</h2>
+          <p style="font-size:13px;color:var(--text3)">Total: <span id="totalGeralS5">0</span> &#183; Aprovados: <span id="aprovGeralS5" style="color:var(--green);font-weight:700">0</span> &#183; Reprovados: <span id="reprovGeralS5" style="color:var(--red);font-weight:700">0</span></p>
+        </div>
+        <input class="search-input" style="max-width:280px;margin:0" type="text" id="searchGeralS5" placeholder="&#128269; Buscar pelo nome..." oninput="renderGeralS5()">
+      </div>
+      <div class="ranking-filters">
+        <button class="filter-btn active" onclick="setFGeralS5('todos',this)">&#127942; Todos<span class="fb-desc">Turma completa</span></button>
+        <button class="filter-btn" onclick="setFGeralS5('aprov',this)">&#10003; Aprovados<span class="fb-desc">Passaram em tudo</span></button>
+        <button class="filter-btn" onclick="setFGeralS5('reprov',this)">&#10007; Reprovados<span class="fb-desc">Precisam melhorar</span></button>
+        <button class="filter-btn" onclick="setFGeralS5('unidade',this)">&#127979; Por Unidade<span class="fb-desc">Filtrar unidade</span></button>
+      </div>
+      <div id="uniWrapGeralS5" style="display:none;margin-bottom:14px">
+        <select id="uniSelGeralS5" onchange="renderGeralS5()" style="padding:9px 14px;border:1.5px solid var(--border);border-radius:9px;font-size:14px;font-weight:600;background:var(--white);cursor:pointer;outline:none;color:var(--text)">
+          <option value="">- Todas as unidades -</option>
+        </select>
+      </div>
+      <table class="ranking-table">
+        <thead><tr>
+          <th style="width:60px;text-align:center">Pos.</th>
+          <th style="text-align:left;padding-left:14px">Aluno</th>
+          <th>Por</th><th>Mat</th><th>Ing</th><th>F&#237;s</th><th>Qu&#237;</th><th>His</th><th>Geo</th>
+          <th>MP <span style="font-weight:500;font-size:10px">(de 10)</span></th><th>Status</th>
+        </tr></thead>
+        <tbody id="bodyGeralS5"></tbody>
+      </table>
+      <div class="stat-grid" id="statsGeralS5" style="margin-top:20px"></div>
     </div>
   </div>
 </div>
@@ -1343,6 +1586,243 @@ const RAW_S4D2 = [
 {unidade:"CAXIAS",nome:"IVES FILHO",ra:"MT24154981",rank:113,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:1,m_fis:0.83,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:0.89,aprov:0},
 {unidade:"ROCHA MIRANDA",nome:"ALESSANDRO MESQUITA",ra:"MT24152928",rank:114,por:5,m_por:2.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:1,m_fis:0.83,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:0.79,aprov:0},
 {unidade:"BANGU",nome:"MARIA SEABRA",ra:"MT26203224",rank:115,por:3,m_por:1.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:0,m_qui:0,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:0.55,aprov:0},
+];
+
+
+
+// DADOS EsPCEx - 5 Simulado - 25/04/2026 - 2 DIA
+// DADOS EsPCEx - 5 Simulado - 25/04/2026 - 5 Sim - 2 DIA
+// Por(20q) Mat(20q) Ing(12q) Fis(12q) Qui(12q) His(12q) Geo(12q)
+// Medianas: Por 4.50 | Mat 2.50 | Ing 4.17 | Fis 3.33 | Qui 3.33 | His 4.17 | Geo 4.17
+// ======================================================
+const RAW_S5D2 = [
+{unidade:"BANGU",nome:"LUIZ SILVA",ra:"MT22100549",rank:1,por:15,m_por:7.5,mat:12,m_mat:6,ing:12,m_ing:10,fis:8,m_fis:6.67,qui:10,m_qui:8.33,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:7.41,aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RENAN ALMEIDA",ra:"MT22061774",rank:2,por:10,m_por:5,mat:17,m_mat:8.5,ing:11,m_ing:9.17,fis:10,m_fis:8.33,qui:7,m_qui:5.83,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:6.3,aprov:1},
+{unidade:"TAQUARA",nome:"GUILHERME FERREIRA",ra:"MT24159964",rank:3,por:14,m_por:7,mat:15,m_mat:7.5,ing:11,m_ing:9.17,fis:6,m_fis:5,qui:7,m_qui:5.83,his:7,m_his:5.83,geo:9,m_geo:7.5,red:"Sim",media:6.07,aprov:1},
+{unidade:"BANGU",nome:"FERNANDA COSTA",ra:"MT24160707",rank:4,por:12,m_por:6,mat:9,m_mat:4.5,ing:11,m_ing:9.17,fis:5,m_fis:4.17,qui:9,m_qui:7.5,his:9,m_his:7.5,geo:10,m_geo:8.33,red:"Sim",media:5.72,aprov:1},
+{unidade:"BANGU",nome:"WADRYAN PEREIRA",ra:"MT24160715",rank:5,por:11,m_por:5.5,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:6,m_fis:5,qui:8,m_qui:6.67,his:7,m_his:5.83,geo:10,m_geo:8.33,red:"Sim",media:5.59,aprov:1},
+{unidade:"TAQUARA",nome:"JOÃO NASCIMENTO",ra:"MT25155615",rank:6,por:11,m_por:5.5,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:6,m_fis:5,qui:7,m_qui:5.83,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:5.41,aprov:1},
+{unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:7,por:11,m_por:5.5,mat:5,m_mat:2.5,ing:11,m_ing:9.17,fis:5,m_fis:4.17,qui:6,m_qui:5,his:5,m_his:4.17,geo:7,m_geo:5.83,red:"Sim",media:4.94,aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAROLLYNE AMORIM",ra:"MT22102925",rank:8,por:13,m_por:6.5,mat:10,m_mat:5,ing:12,m_ing:10,fis:8,m_fis:6.67,qui:7,m_qui:5.83,his:1,m_his:0.83,geo:5,m_geo:4.17,red:"Sim",media:6.41,aprov:0},
+{unidade:"BANGU",nome:"GUSTAVO SANTOS",ra:"MT24157810",rank:9,por:16,m_por:8,mat:11,m_mat:5.5,ing:11,m_ing:9.17,fis:6,m_fis:5,qui:5,m_qui:4.17,his:4,m_his:3.33,geo:6,m_geo:5,red:"Sim",media:6.15,aprov:0},
+{unidade:"BANGU",nome:"LUCAS SANTOS",ra:"MT23127392",rank:11,por:12,m_por:6,mat:9,m_mat:4.5,ing:11,m_ing:9.17,fis:7,m_fis:5.83,qui:5,m_qui:4.17,his:3,m_his:2.5,geo:4,m_geo:3.33,red:"Sim",media:5.54,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"RAFAELLY SANTOS",ra:"MT22089015",rank:12,por:15,m_por:7.5,mat:8,m_mat:4,ing:11,m_ing:9.17,fis:3,m_fis:2.5,qui:7,m_qui:5.83,his:1,m_his:0.83,geo:9,m_geo:7.5,red:"Sim",media:5.46,aprov:0},
+{unidade:"MADUREIRA",nome:"CLÍCIA BARCELLOS",ra:"MT25194945",rank:13,por:13,m_por:6.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:9,m_qui:7.5,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:5.39,aprov:0},
+{unidade:"MADUREIRA",nome:"FABYANE BASTOS",ra:"MT19025063",rank:14,por:11,m_por:5.5,mat:6,m_mat:3,ing:12,m_ing:10,fis:6,m_fis:5,qui:6,m_qui:5,his:4,m_his:3.33,geo:6,m_geo:5,red:"Sim",media:5.22,aprov:0},
+{unidade:"TIJUCA",nome:"NATHAN SALES",ra:"MT25198839",rank:15,por:12,m_por:6,mat:6,m_mat:3,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:6,m_qui:5,his:4,m_his:3.33,geo:6,m_geo:5,red:"Sim",media:5.17,aprov:0},
+{unidade:"BANGU",nome:"MATHEUS COELHO",ra:"MT25173931",rank:16,por:6,m_por:3,mat:7,m_mat:3.5,ing:11,m_ing:9.17,fis:9,m_fis:7.5,qui:7,m_qui:5.83,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:5.13,aprov:0},
+{unidade:"BANGU",nome:"KAIO AMARAL",ra:"MT25198086",rank:17,por:12,m_por:6,mat:11,m_mat:5.5,ing:10,m_ing:8.33,fis:4,m_fis:3.33,qui:7,m_qui:5.83,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:5.07,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"KAMYLLE AMORIM",ra:"MT22102917",rank:18,por:13,m_por:6.5,mat:8,m_mat:4,ing:12,m_ing:10,fis:3,m_fis:2.5,qui:7,m_qui:5.83,his:4,m_his:3.33,geo:8,m_geo:6.67,red:"Sim",media:5.02,aprov:0},
+{unidade:"NOVA IGUACU",nome:"MARIA MATTOS",ra:"MT25187741",rank:19,por:10,m_por:5,mat:4,m_mat:2,ing:11,m_ing:9.17,fis:6,m_fis:5,qui:6,m_qui:5,his:2,m_his:1.67,geo:7,m_geo:5.83,red:"Sim",media:5,aprov:0},
+{unidade:"NOVA IGUACU",nome:"DAVI DIAS",ra:"MT23129877",rank:20,por:14,m_por:7,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:2,m_his:1.67,geo:2,m_geo:1.67,red:"Sim",media:4.96,aprov:0},
+{unidade:"NOVA IGUACU",nome:"LUIZ MOREIRA",ra:"MT20042511",rank:21,por:13,m_por:6.5,mat:10,m_mat:5,ing:11,m_ing:9.17,fis:2,m_fis:1.67,qui:8,m_qui:6.67,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:4.93,aprov:0},
+{unidade:"TAQUARA",nome:"GUILHERME SILVA",ra:"MT22103170",rank:22,por:8,m_por:4,mat:6,m_mat:3,ing:10,m_ing:8.33,fis:6,m_fis:5,qui:7,m_qui:5.83,his:2,m_his:1.67,geo:4,m_geo:3.33,red:"Sim",media:4.74,aprov:0},
+{unidade:"BANGU",nome:"ARTHUR DAMASCENO",ra:"MT22090658",rank:23,por:9,m_por:4.5,mat:4,m_mat:2,ing:12,m_ing:10,fis:7,m_fis:5.83,qui:4,m_qui:3.33,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:4.69,aprov:0},
+{unidade:"BANGU",nome:"LIS RAMOS",ra:"MT25197658",rank:24,por:12,m_por:6,mat:10,m_mat:5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:3,m_qui:2.5,his:9,m_his:7.5,geo:7,m_geo:5.83,red:"Sim",media:4.61,aprov:0},
+{unidade:"BANGU",nome:"ALEX FILHO",ra:"MT23120892",rank:25,por:11,m_por:5.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:5,m_fis:4.17,qui:4,m_qui:3.33,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:4.57,aprov:0},
+{unidade:"CAXIAS",nome:"GUILHERME RODRIGUES",ra:"MT23134356",rank:26,por:12,m_por:6,mat:12,m_mat:6,ing:11,m_ing:9.17,fis:3,m_fis:2.5,qui:5,m_qui:4.17,his:4,m_his:3.33,geo:2,m_geo:1.67,red:"Sim",media:4.43,aprov:0},
+{unidade:"BANGU",nome:"FREDERICO MOREIRA",ra:"MT21064118",rank:27,por:11,m_por:5.5,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:3,m_fis:2.5,qui:6,m_qui:5,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:4.39,aprov:0},
+{unidade:"MADUREIRA",nome:"MURILO CORDEIRO",ra:"MT23111545",rank:28,por:10,m_por:5,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:7,m_qui:5.83,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:4.35,aprov:0},
+{unidade:"CAXIAS",nome:"EDUARDO SILVA",ra:"MT23130172",rank:29,por:11,m_por:5.5,mat:13,m_mat:6.5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:2,m_qui:1.67,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:4.2,aprov:0},
+{unidade:"MADUREIRA",nome:"DAVI MADUREIRA",ra:"MT25196593",rank:30,por:10,m_por:5,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:7,m_fis:5.83,qui:0,m_qui:0,his:3,m_his:2.5,geo:5,m_geo:4.17,red:"Sim",media:4.17,aprov:0},
+{unidade:"MADUREIRA",nome:"EDSON ESCOBAR",ra:"MT23111180",rank:31,por:11,m_por:5.5,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:4,m_fis:3.33,qui:3,m_qui:2.5,his:3,m_his:2.5,geo:7,m_geo:5.83,red:"Sim",media:4.11,aprov:0},
+{unidade:"CAXIAS",nome:"LUIS GOMES",ra:"MT24155129",rank:32,por:10,m_por:5,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:4.07,aprov:0},
+{unidade:"BANGU",nome:"GABRIELA ARAUJO",ra:"MT24136715",rank:33,por:12,m_por:6,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:4.06,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"JOAO SOUZA",ra:"MT22091391",rank:34,por:7,m_por:3.5,mat:6,m_mat:3,ing:12,m_ing:10,fis:7,m_fis:5.83,qui:3,m_qui:2.5,his:2,m_his:1.67,geo:5,m_geo:4.17,red:"Sim",media:4.06,aprov:0},
+{unidade:"BANGU",nome:"GIOVANNA ARRUDA",ra:"MT26202648",rank:35,por:9,m_por:4.5,mat:3,m_mat:1.5,ing:11,m_ing:9.17,fis:3,m_fis:2.5,qui:6,m_qui:5,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:3.94,aprov:0},
+{unidade:"TAQUARA",nome:"LARYSSA COSTA",ra:"MT24141913",rank:36,por:11,m_por:5.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.93,aprov:0},
+{unidade:"TIJUCA",nome:"GUILHERME DANTAS",ra:"MT25161282",rank:37,por:8,m_por:4,mat:6,m_mat:3,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:4,m_geo:3.33,red:"Sim",media:3.91,aprov:0},
+{unidade:"BANGU",nome:"JOSÉ JARDIM",ra:"MT21060264",rank:38,por:8,m_por:4,mat:5,m_mat:2.5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:4,m_qui:3.33,his:4,m_his:3.33,geo:7,m_geo:5.83,red:"Sim",media:3.91,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"DAVI SANTOS",ra:"MT22099899",rank:39,por:10,m_por:5,mat:0,m_mat:0,ing:0,m_ing:0,fis:4,m_fis:3.33,qui:3,m_qui:2.5,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.89,aprov:0},
+{unidade:"NOVA IGUACU",nome:"FRANKLIN JÚNIOR",ra:"MT24146250",rank:40,por:9,m_por:4.5,mat:7,m_mat:3.5,ing:11,m_ing:9.17,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:2,m_his:1.67,geo:5,m_geo:4.17,red:"Sim",media:3.85,aprov:0},
+{unidade:"BANGU",nome:"FELIPE VICENTE",ra:"MT22099576",rank:41,por:9,m_por:4.5,mat:5,m_mat:2.5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:8,m_geo:6.67,red:"Sim",media:3.76,aprov:0},
+{unidade:"BANGU",nome:"MIGUEL GARCEZ",ra:"MT25170994",rank:42,por:8,m_por:4,mat:6,m_mat:3,ing:12,m_ing:10,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:7,m_his:5.83,geo:8,m_geo:6.67,red:"Sim",media:3.63,aprov:0},
+{unidade:"TAQUARA",nome:"RODRIGO MIRANDA",ra:"MT23109556",rank:43,por:10,m_por:5,mat:6,m_mat:3,ing:12,m_ing:10,fis:1,m_fis:0.83,qui:6,m_qui:5,his:3,m_his:2.5,geo:1,m_geo:0.83,red:"Sim",media:3.61,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"JOÃO SILVA",ra:"MT22087597",rank:44,por:7,m_por:3.5,mat:1,m_mat:0.5,ing:10,m_ing:8.33,fis:4,m_fis:3.33,qui:5,m_qui:4.17,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:3.59,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"ANAÍS SILVA",ra:"MT22058291",rank:45,por:10,m_por:5,mat:4,m_mat:2,ing:11,m_ing:9.17,fis:2,m_fis:1.67,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:10,m_geo:8.33,red:"Sim",media:3.52,aprov:0},
+{unidade:"TAQUARA",nome:"ALICIA SAMPAIO",ra:"MT25174202",rank:46,por:9,m_por:4.5,mat:8,m_mat:4,ing:9,m_ing:7.5,fis:4,m_fis:3.33,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:2,m_geo:1.67,red:"Sim",media:3.48,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"MATHEUS MACEDO",ra:"MT22089114",rank:47,por:9,m_por:4.5,mat:2,m_mat:1,ing:5,m_ing:4.17,fis:4,m_fis:3.33,qui:2,m_qui:1.67,his:3,m_his:2.5,geo:1,m_geo:0.83,red:"Sim",media:3.48,aprov:0},
+{unidade:"MADUREIRA",nome:"INGRID NASCIMENTO",ra:"MT22098396",rank:48,por:9,m_por:4.5,mat:5,m_mat:2.5,ing:12,m_ing:10,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:3,m_his:2.5,geo:8,m_geo:6.67,red:"Sim",media:3.48,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"PEDRO RIBEIRO",ra:"MT22093538",rank:49,por:8,m_por:4,mat:3,m_mat:1.5,ing:9,m_ing:7.5,fis:4,m_fis:3.33,qui:3,m_qui:2.5,his:5,m_his:4.17,geo:8,m_geo:6.67,red:"Sim",media:3.44,aprov:0},
+{unidade:"TIJUCA",nome:"ANA GRACIANO",ra:"MT25179557",rank:50,por:10,m_por:5,mat:6,m_mat:3,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:2,m_qui:1.67,his:1,m_his:0.83,geo:2,m_geo:1.67,red:"Sim",media:3.43,aprov:0},
+{unidade:"CAXIAS",nome:"DANIEL BARBOSA",ra:"MT24135717",rank:51,por:7,m_por:3.5,mat:3,m_mat:1.5,ing:12,m_ing:10,fis:6,m_fis:5,qui:1,m_qui:0.83,his:1,m_his:0.83,geo:0,m_geo:0,red:"Sim",media:3.41,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"FILIPE SILVA",ra:"MT23131444",rank:52,por:9,m_por:4.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.39,aprov:0},
+{unidade:"BANGU",nome:"MILLENA FERREIRA",ra:"MT25185935",rank:53,por:6,m_por:3,mat:4,m_mat:2,ing:12,m_ing:10,fis:6,m_fis:5,qui:2,m_qui:1.67,his:5,m_his:4.17,geo:3,m_geo:2.5,red:"Sim",media:3.37,aprov:0},
+{unidade:"NOVA IGUACU",nome:"MARCO JUNIOR",ra:"MT25184482",rank:55,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:4,m_fis:3.33,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.26,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"FELIPE SANTOS",ra:"MT25200916",rank:56,por:7,m_por:3.5,mat:8,m_mat:4,ing:11,m_ing:9.17,fis:4,m_fis:3.33,qui:3,m_qui:2.5,his:3,m_his:2.5,geo:5,m_geo:4.17,red:"Sim",media:3.22,aprov:0},
+{unidade:"BANGU",nome:"RENAN JERONIMO",ra:"MT24153462",rank:57,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:6,m_fis:5,qui:1,m_qui:0.83,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.19,aprov:0},
+{unidade:"CAXIAS",nome:"WELLINGTON SILVA",ra:"MT22104582",rank:58,por:6,m_por:3,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:2,m_fis:1.67,qui:6,m_qui:5,his:3,m_his:2.5,geo:4,m_geo:3.33,red:"Sim",media:3,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"NICOLAS ARAUJO",ra:"MT23120413",rank:59,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.98,aprov:0},
+{unidade:"TIJUCA",nome:"VINICIUS GUIMARÃES",ra:"MT25201336",rank:60,por:7,m_por:3.5,mat:6,m_mat:3,ing:12,m_ing:10,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:2.94,aprov:0},
+{unidade:"TAQUARA",nome:"CAUÃ ESTEVES",ra:"MT25186701",rank:62,por:7,m_por:3.5,mat:7,m_mat:3.5,ing:5,m_ing:4.17,fis:4,m_fis:3.33,qui:1,m_qui:0.83,his:2,m_his:1.67,geo:5,m_geo:4.17,red:"Sim",media:2.85,aprov:0},
+{unidade:"BANGU",nome:"VANDERSON RAMOS",ra:"MT26203695",rank:63,por:7,m_por:3.5,mat:3,m_mat:1.5,ing:10,m_ing:8.33,fis:2,m_fis:1.67,qui:4,m_qui:3.33,his:4,m_his:3.33,geo:4,m_geo:3.33,red:"Sim",media:2.85,aprov:0},
+{unidade:"CAXIAS",nome:"VITOR SILVA",ra:"MT25176918",rank:64,por:8,m_por:4,mat:5,m_mat:2.5,ing:6,m_ing:5,fis:2,m_fis:1.67,qui:2,m_qui:1.67,his:2,m_his:1.67,geo:3,m_geo:2.5,red:"Sim",media:2.7,aprov:0},
+{unidade:"MADUREIRA",nome:"RAFAELLA SANTOS",ra:"MT24162687",rank:65,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.7,aprov:0},
+{unidade:"TAQUARA",nome:"GUILHERME PINTO",ra:"MT23132541",rank:66,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.7,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"DAVI ALVES",ra:"MT22059356",rank:67,por:5,m_por:2.5,mat:5,m_mat:2.5,ing:8,m_ing:6.67,fis:3,m_fis:2.5,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:4,m_geo:3.33,red:"Sim",media:2.69,aprov:0},
+{unidade:"NOVA IGUACU",nome:"YAGO RAMALHO",ra:"MT24136996",rank:68,por:7,m_por:3.5,mat:9,m_mat:4.5,ing:12,m_ing:10,fis:2,m_fis:1.67,qui:3,m_qui:2.5,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:2.67,aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR SANTOS",ra:"MT25171950",rank:69,por:7,m_por:3.5,mat:2,m_mat:1,ing:10,m_ing:8.33,fis:2,m_fis:1.67,qui:3,m_qui:2.5,his:1,m_his:0.83,geo:5,m_geo:4.17,red:"Sim",media:2.67,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"LEONARDO FERREIRA",ra:"MT22077499",rank:70,por:4,m_por:2,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.65,aprov:0},
+{unidade:"CAXIAS",nome:"ANA SILVA",ra:"MT22092035",rank:71,por:6,m_por:3,mat:3,m_mat:1.5,ing:8,m_ing:6.67,fis:4,m_fis:3.33,qui:1,m_qui:0.83,his:2,m_his:1.67,geo:1,m_geo:0.83,red:"Sim",media:2.63,aprov:0},
+{unidade:"TIJUCA",nome:"MARIA PICOLO",ra:"MT25201146",rank:72,por:5,m_por:2.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.59,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"GABRIELA SANTOS",ra:"MT23117427",rank:73,por:3,m_por:1.5,mat:5,m_mat:2.5,ing:12,m_ing:10,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:2,m_his:1.67,geo:3,m_geo:2.5,red:"Sim",media:2.52,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MIGUEL SANTOS",ra:"MT23120058",rank:74,por:6,m_por:3,mat:2,m_mat:1,ing:5,m_ing:4.17,fis:2,m_fis:1.67,qui:3,m_qui:2.5,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:2.44,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MARCUS PEREIRA",ra:"MT25171505",rank:75,por:4,m_por:2,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.37,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"DAVI SILVA",ra:"MT25195728",rank:77,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:1,m_fis:0.83,qui:0,m_qui:0,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.06,aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR CAMPOLIM",ra:"MT22089064",rank:78,por:7,m_por:3.5,mat:7,m_mat:3.5,ing:4,m_ing:3.33,fis:1,m_fis:0.83,qui:1,m_qui:0.83,his:1,m_his:0.83,geo:3,m_geo:2.5,red:"Sim",media:2.02,aprov:0},
+{unidade:"BANGU",nome:"CAUÃ GRAÇA",ra:"MT25189135",rank:79,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:0,m_fis:0,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.7,aprov:0},
+{unidade:"MADUREIRA",nome:"LANAY LINS",ra:"MT24163974",rank:80,por:3,m_por:1.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:1,m_qui:0.83,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.41,aprov:0},
+];
+
+
+// DADOS EsPCEx - 6 Simulado - 02/05/2026 - 1 DIA
+// DADOS EsPCEx - 6 Simulado - 02/05/2026 - 6 Sim - 1 DIA
+// Portugues(20q) - Fisica(12q) - Quimica(12q)
+// Medianas: Port 3.00 | Fis 1.67 | Qui 2.50
+// ======================================================
+const RAW_S6D1 = [
+{unidade:"BANGU",nome:"GUSTAVO SANTOS",ra:"MT24157810",rank:1,port:13,m_port:6.5,fisi:10,m_fisi:8.33,quim:7,m_quim:5.83,media:6.96,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"LUIZ SILVA",ra:"MT22100549",rank:2,port:14,m_port:7,fisi:8,m_fisi:6.67,quim:8,m_quim:6.67,media:6.82,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"FERNANDA COSTA",ra:"MT24160707",rank:3,port:13,m_port:6.5,fisi:7,m_fisi:5.83,quim:10,m_quim:8.33,media:6.68,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"RAFAEL FERNANDES",ra:"MT24160046",rank:4,port:15,m_port:7.5,fisi:4,m_fisi:3.33,quim:9,m_quim:7.5,media:6.11,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAMYLLE AMORIM",ra:"MT22102917",rank:5,port:14,m_port:7,fisi:5,m_fisi:4.17,quim:7,m_quim:5.83,media:5.8,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"LUCAS SANTOS",ra:"MT23127392",rank:6,port:12,m_port:6,fisi:5,m_fisi:4.17,quim:9,m_quim:7.5,media:5.72,red:"Sim",aprov:1},
+{unidade:"MADUREIRA",nome:"CLÍCIA BARCELLOS",ra:"MT25194945",rank:7,port:16,m_port:8,fisi:3,m_fisi:2.5,quim:7,m_quim:5.83,media:5.68,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"EDUARDA FERREIRA",ra:"MT26203034",rank:8,port:15,m_port:7.5,fisi:3,m_fisi:2.5,quim:8,m_quim:6.67,media:5.65,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"LUIZ MOREIRA",ra:"MT20042511",rank:9,port:10,m_port:5,fisi:7,m_fisi:5.83,quim:7,m_quim:5.83,media:5.46,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"GUILHERME FERREIRA",ra:"MT24159964",rank:10,port:14,m_port:7,fisi:5,m_fisi:4.17,quim:5,m_quim:4.17,media:5.43,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAROLLYNE AMORIM",ra:"MT22102925",rank:11,port:16,m_port:8,fisi:2,m_fisi:1.67,quim:7,m_quim:5.83,media:5.41,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RAFAELLY SANTOS",ra:"MT22089015",rank:12,port:15,m_port:7.5,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:5.37,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"JOÃO NASCIMENTO",ra:"MT25155615",rank:13,port:12,m_port:6,fisi:5,m_fisi:4.17,quim:7,m_quim:5.83,media:5.35,red:"Sim",aprov:1},
+{unidade:"MADUREIRA",nome:"FABYANE BASTOS",ra:"MT19025063",rank:14,port:13,m_port:6.5,fisi:4,m_fisi:3.33,quim:6,m_quim:5,media:5.11,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"JULIA OLIVEIRA",ra:"MT25165903",rank:15,port:16,m_port:8,fisi:3,m_fisi:2.5,quim:3,m_quim:2.5,media:4.94,red:"Sim",aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RENAN ALMEIDA",ra:"MT22061774",rank:16,port:11,m_port:5.5,fisi:3,m_fisi:2.5,quim:8,m_quim:6.67,media:4.76,red:"Sim",aprov:1},
+{unidade:"TIJUCA",nome:"NATHAN SALES",ra:"MT25198839",rank:17,port:12,m_port:6,fisi:3,m_fisi:2.5,quim:6,m_quim:5,media:4.61,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:18,port:14,m_port:7,fisi:2,m_fisi:1.67,quim:5,m_quim:4.17,media:4.59,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"ERICK SANTOS",ra:"MT24161465",rank:19,port:10,m_port:5,fisi:5,m_fisi:4.17,quim:5,m_quim:4.17,media:4.54,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"MARIA MATTOS",ra:"MT25187741",rank:20,port:10,m_port:5,fisi:2,m_fisi:1.67,quim:8,m_quim:6.67,media:4.26,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"MATHEUS COELHO",ra:"MT25173931",rank:21,port:10,m_port:5,fisi:4,m_fisi:3.33,quim:5,m_quim:4.17,media:4.26,red:"Sim",aprov:1},
+{unidade:"CAXIAS",nome:"GUILHERME RODRIGUES",ra:"MT23134356",rank:22,port:13,m_port:6.5,fisi:2,m_fisi:1.67,quim:3,m_quim:2.5,media:4,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"DAVI DIAS",ra:"MT23129877",rank:23,port:12,m_port:6,fisi:2,m_fisi:1.67,quim:4,m_quim:3.33,media:3.96,red:"Sim",aprov:1},
+{unidade:"TAQUARA",nome:"RODRIGO MIRANDA",ra:"MT23109556",rank:24,port:9,m_port:4.5,fisi:3,m_fisi:2.5,quim:5,m_quim:4.17,media:3.76,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"MARCO JUNIOR",ra:"MT25184482",rank:25,port:8,m_port:4,fisi:4,m_fisi:3.33,quim:4,m_quim:3.33,media:3.63,red:"Sim",aprov:1},
+{unidade:"CAXIAS",nome:"LUIS GOMES",ra:"MT24155129",rank:26,port:9,m_port:4.5,fisi:3,m_fisi:2.5,quim:4,m_quim:3.33,media:3.57,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"ARTHUR DAMASCENO",ra:"MT22090658",rank:27,port:6,m_port:3,fisi:5,m_fisi:4.17,quim:4,m_quim:3.33,media:3.46,red:"Sim",aprov:1},
+{unidade:"CAMPO GRANDE",nome:"FELIPE SANTOS",ra:"MT25200916",rank:28,port:9,m_port:4.5,fisi:3,m_fisi:2.5,quim:3,m_quim:2.5,media:3.39,red:"Sim",aprov:1},
+{unidade:"TIJUCA",nome:"GUILHERME DANTAS",ra:"MT25161282",rank:29,port:8,m_port:4,fisi:3,m_fisi:2.5,quim:4,m_quim:3.33,media:3.35,red:"Sim",aprov:1},
+{unidade:"NOVA IGUACU",nome:"GABRIEL SOUZA",ra:"MT25201021",rank:30,port:6,m_port:3,fisi:4,m_fisi:3.33,quim:4,m_quim:3.33,media:3.18,red:"Sim",aprov:1},
+{unidade:"TIJUCA",nome:"VINICIUS GUIMARÃES",ra:"MT25201336",rank:31,port:6,m_port:3,fisi:3,m_fisi:2.5,quim:5,m_quim:4.17,media:3.09,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"GIOVANNA ARRUDA",ra:"MT26202648",rank:32,port:6,m_port:3,fisi:4,m_fisi:3.33,quim:3,m_quim:2.5,media:3,red:"Sim",aprov:1},
+{unidade:"TIJUCA",nome:"YASMIN SILVA",ra:"MT25194903",rank:33,port:6,m_port:3,fisi:3,m_fisi:2.5,quim:4,m_quim:3.33,media:2.91,red:"Sim",aprov:1},
+{unidade:"BANGU",nome:"FELIPE VICENTE",ra:"MT22099576",rank:34,port:8,m_port:4,fisi:2,m_fisi:1.67,quim:3,m_quim:2.5,media:2.89,red:"Sim",aprov:1},
+{unidade:"CAXIAS",nome:"VITOR SILVA",ra:"MT25176918",rank:35,port:5,m_port:2.5,fisi:8,m_fisi:6.67,quim:2,m_quim:1.67,media:3.71,red:"Sim",aprov:0},
+{unidade:"MADUREIRA",nome:"EDSON ESCOBAR",ra:"MT23111180",rank:36,port:12,m_port:6,fisi:0,m_fisi:0,quim:5,m_quim:4.17,media:3.59,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"KAIO AMARAL",ra:"MT25198086",rank:37,port:12,m_port:6,fisi:1,m_fisi:0.83,quim:3,m_quim:2.5,media:3.5,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"LIS RAMOS",ra:"MT25197658",rank:38,port:11,m_port:5.5,fisi:2,m_fisi:1.67,quim:2,m_quim:1.67,media:3.37,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MIGUEL SANTOS",ra:"MT23120058",rank:39,port:7,m_port:3.5,fisi:4,m_fisi:3.33,quim:2,m_quim:1.67,media:3.04,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"LARYSSA COSTA",ra:"MT24141913",rank:40,port:4,m_port:2,fisi:5,m_fisi:4.17,quim:4,m_quim:3.33,media:3.02,red:"Sim",aprov:0},
+{unidade:"CAXIAS",nome:"EDUARDO SILVA",ra:"MT23130172",rank:41,port:10,m_port:5,fisi:1,m_fisi:0.83,quim:2,m_quim:1.67,media:2.87,red:"Sim",aprov:0},
+{unidade:"TIJUCA",nome:"ANA GRACIANO",ra:"MT25179557",rank:42,port:5,m_port:2.5,fisi:5,m_fisi:4.17,quim:1,m_quim:0.83,media:2.69,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"PEDRO RIBEIRO",ra:"MT22093538",rank:43,port:5,m_port:2.5,fisi:3,m_fisi:2.5,quim:3,m_quim:2.5,media:2.5,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"GAEL CASTRO",ra:"MT22089825",rank:44,port:5,m_port:2.5,fisi:4,m_fisi:3.33,quim:1,m_quim:0.83,media:2.41,red:"Sim",aprov:0},
+{unidade:"CAXIAS",nome:"PATRYCK PEREIRA",ra:"MT26202895",rank:45,port:7,m_port:3.5,fisi:1,m_fisi:0.83,quim:3,m_quim:2.5,media:2.39,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"MILLENA FERREIRA",ra:"MT25185935",rank:46,port:4,m_port:2,fisi:2,m_fisi:1.67,quim:5,m_quim:4.17,media:2.37,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"GUSTAVO ALVES",ra:"MT23133879",rank:47,port:4,m_port:2,fisi:5,m_fisi:4.17,quim:0,m_quim:0,media:2.28,red:"Sim",aprov:0},
+{unidade:"CAXIAS",nome:"WELLINGTON SILVA",ra:"MT22104582",rank:48,port:7,m_port:3.5,fisi:1,m_fisi:0.83,quim:2,m_quim:1.67,media:2.2,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"ITALO MATTA",ra:"MT22094353",rank:49,port:2,m_port:1,fisi:3,m_fisi:2.5,quim:5,m_quim:4.17,media:2.2,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL OLIVEIRA",ra:"MT24148793",rank:50,port:7,m_port:3.5,fisi:1,m_fisi:0.83,quim:2,m_quim:1.67,media:2.2,red:"Sim",aprov:0},
+{unidade:"CAMPO GRANDE",nome:"DAVI SILVA",ra:"MT25195728",rank:51,port:6,m_port:3,fisi:1,m_fisi:0.83,quim:3,m_quim:2.5,media:2.17,red:"Sim",aprov:0},
+{unidade:"NOVA IGUACU",nome:"RUAN SANTOS",ra:"MT25166455",rank:52,port:4,m_port:2,fisi:3,m_fisi:2.5,quim:2,m_quim:1.67,media:2.09,red:"Sim",aprov:0},
+{unidade:"BANGU",nome:"FREDERICO MOREIRA",ra:"MT21064118",rank:53,port:4,m_port:2,fisi:3,m_fisi:2.5,quim:1,m_quim:0.83,media:1.91,red:"Sim",aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"MATHEUS MACEDO",ra:"MT22089114",rank:54,port:5,m_port:2.5,fisi:0,m_fisi:0,quim:4,m_quim:3.33,media:1.85,red:"Sim",aprov:0},
+{unidade:"TAQUARA",nome:"ALICIA SAMPAIO",ra:"MT25174202",rank:55,port:4,m_port:2,fisi:1,m_fisi:0.83,quim:3,m_quim:2.5,media:1.72,red:"Sim",aprov:0},
+{unidade:"CAXIAS",nome:"ANNA SILVA",ra:"MT25199621",rank:56,port:2,m_port:1,fisi:3,m_fisi:2.5,quim:2,m_quim:1.67,media:1.65,red:"Sim",aprov:0},
+];
+
+
+// DADOS EsPCEx - 6 Simulado - 02/05+09/05/2026 - 2 DIA COMBINADO
+// DADOS EsPCEx - 6 Simulado - 02/05+09/05/2026 - 6 Sim - 2 DIA (COMBINADO)
+// Por(20q) Mat(20q) Ing(12q) Fis(12q) Qui(12q) His(12q) Geo(12q)
+// Medianas: Por 3.00 | Mat 2.50 | Ing 4.17 | Fis 1.67 | Qui 2.50 | His 4.17 | Geo 4.17
+// ======================================================
+const RAW_S6D2 = [
+{unidade:"BANGU",nome:"FERNANDA COSTA",ra:"MT24160707",rank:1,por:13,m_por:6.5,mat:11,m_mat:5.5,ing:12,m_ing:10,fis:7,m_fis:5.83,qui:10,m_qui:8.33,his:8,m_his:6.67,geo:10,m_geo:8.33,red:"Sim",media:7.11,aprov:1},
+{unidade:"TAQUARA",nome:"GUILHERME FERREIRA",ra:"MT24159964",rank:2,por:14,m_por:7,mat:18,m_mat:9,ing:11,m_ing:9.17,fis:5,m_fis:4.17,qui:5,m_qui:4.17,his:7,m_his:5.83,geo:10,m_geo:8.33,red:"Sim",media:7.03,aprov:1},
+{unidade:"TAQUARA",nome:"RAFAEL FERNANDES",ra:"MT24160046",rank:3,por:15,m_por:7.5,mat:16,m_mat:8,ing:11,m_ing:9.17,fis:4,m_fis:3.33,qui:9,m_qui:7.5,his:7,m_his:5.83,geo:8,m_geo:6.67,red:"Sim",media:6.98,aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"KAROLLYNE AMORIM",ra:"MT22102925",rank:4,por:16,m_por:8,mat:14,m_mat:7,ing:12,m_ing:10,fis:2,m_fis:1.67,qui:7,m_qui:5.83,his:7,m_his:5.83,geo:9,m_geo:7.5,red:"Sim",media:6.67,aprov:1},
+{unidade:"MADUREIRA",nome:"CLÍCIA BARCELLOS",ra:"MT25194945",rank:5,por:16,m_por:8,mat:15,m_mat:7.5,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:7,m_qui:5.83,his:6,m_his:5,geo:10,m_geo:8.33,red:"Sim",media:6.64,aprov:1},
+{unidade:"MADUREIRA",nome:"FABYANE BASTOS",ra:"MT19025063",rank:6,por:13,m_por:6.5,mat:15,m_mat:7.5,ing:11,m_ing:9.17,fis:4,m_fis:3.33,qui:6,m_qui:5,his:6,m_his:5,geo:10,m_geo:8.33,red:"Sim",media:6.51,aprov:1},
+{unidade:"ROCHA MIRANDA",nome:"RENAN ALMEIDA",ra:"MT22061774",rank:7,por:11,m_por:5.5,mat:18,m_mat:9,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:8,m_qui:6.67,his:7,m_his:5.83,geo:7,m_geo:5.83,red:"Sim",media:6.36,aprov:1},
+{unidade:"NOVA IGUACU",nome:"LUIZ MOREIRA",ra:"MT20042511",rank:8,por:10,m_por:5,mat:11,m_mat:5.5,ing:11,m_ing:9.17,fis:7,m_fis:5.83,qui:7,m_qui:5.83,his:7,m_his:5.83,geo:8,m_geo:6.67,red:"Sim",media:6.18,aprov:1},
+{unidade:"BANGU",nome:"LUCAS SANTOS",ra:"MT23127392",rank:9,por:12,m_por:6,mat:11,m_mat:5.5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:9,m_qui:7.5,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:6.09,aprov:1},
+{unidade:"TAQUARA",nome:"JOÃO NASCIMENTO",ra:"MT25155615",rank:10,por:12,m_por:6,mat:13,m_mat:6.5,ing:11,m_ing:9.17,fis:5,m_fis:4.17,qui:7,m_qui:5.83,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:6.08,aprov:1},
+{unidade:"TAQUARA",nome:"ALEXANDRE AUGUSTINHO",ra:"MT21052444",rank:11,por:14,m_por:7,mat:10,m_mat:5,ing:12,m_ing:10,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:5,m_his:4.17,geo:9,m_geo:7.5,red:"Sim",media:5.73,aprov:1},
+{unidade:"BANGU",nome:"MATHEUS COELHO",ra:"MT25173931",rank:12,por:10,m_por:5,mat:11,m_mat:5.5,ing:10,m_ing:8.33,fis:4,m_fis:3.33,qui:5,m_qui:4.17,his:7,m_his:5.83,geo:10,m_geo:8.33,red:"Sim",media:5.68,aprov:1},
+{unidade:"NOVA IGUACU",nome:"DAVI DIAS",ra:"MT23129877",rank:13,por:12,m_por:6,mat:11,m_mat:5.5,ing:11,m_ing:9.17,fis:2,m_fis:1.67,qui:4,m_qui:3.33,his:8,m_his:6.67,geo:8,m_geo:6.67,red:"Sim",media:5.59,aprov:1},
+{unidade:"NOVA IGUACU",nome:"JULIA OLIVEIRA",ra:"MT25165903",rank:14,por:16,m_por:8,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:6,m_his:5,geo:8,m_geo:6.67,red:"Sim",media:5.37,aprov:1},
+{unidade:"NOVA IGUACU",nome:"MARIA MATTOS",ra:"MT25187741",rank:15,por:10,m_por:5,mat:7,m_mat:3.5,ing:10,m_ing:8.33,fis:2,m_fis:1.67,qui:8,m_qui:6.67,his:8,m_his:6.67,geo:6,m_geo:5,red:"Sim",media:5.03,aprov:1},
+{unidade:"BANGU",nome:"ARTHUR DAMASCENO",ra:"MT22090658",rank:16,por:6,m_por:3,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:4,m_qui:3.33,his:6,m_his:5,geo:7,m_geo:5.83,red:"Sim",media:4.84,aprov:1},
+{unidade:"BANGU",nome:"FELIPE VICENTE",ra:"MT22099576",rank:17,por:8,m_por:4,mat:7,m_mat:3.5,ing:10,m_ing:8.33,fis:2,m_fis:1.67,qui:3,m_qui:2.5,his:5,m_his:4.17,geo:8,m_geo:6.67,red:"Sim",media:4.33,aprov:1},
+{unidade:"CAXIAS",nome:"LUIS GOMES",ra:"MT24155129",rank:18,por:9,m_por:4.5,mat:5,m_mat:2.5,ing:9,m_ing:7.5,fis:3,m_fis:2.5,qui:4,m_qui:3.33,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:4.15,aprov:1},
+{unidade:"BANGU",nome:"GUSTAVO SANTOS",ra:"MT24157810",rank:19,por:13,m_por:6.5,mat:16,m_mat:8,ing:12,m_ing:10,fis:10,m_fis:8.33,qui:7,m_qui:5.83,his:4,m_his:3.33,geo:7,m_geo:5.83,red:"Sim",media:7.15,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"KAMYLLE AMORIM",ra:"MT22102917",rank:20,por:14,m_por:7,mat:8,m_mat:4,ing:12,m_ing:10,fis:5,m_fis:4.17,qui:7,m_qui:5.83,his:4,m_his:3.33,geo:9,m_geo:7.5,red:"Sim",media:5.99,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"RAFAELLY SANTOS",ra:"MT22089015",rank:21,por:15,m_por:7.5,mat:8,m_mat:4,ing:12,m_ing:10,fis:4,m_fis:3.33,qui:5,m_qui:4.17,his:4,m_his:3.33,geo:6,m_geo:5,red:"Sim",media:5.55,aprov:0},
+{unidade:"MADUREIRA",nome:"EDSON ESCOBAR",ra:"MT23111180",rank:22,por:12,m_por:6,mat:13,m_mat:6.5,ing:11,m_ing:9.17,fis:0,m_fis:0,qui:5,m_qui:4.17,his:7,m_his:5.83,geo:8,m_geo:6.67,red:"Sim",media:5.54,aprov:0},
+{unidade:"CAXIAS",nome:"GUILHERME RODRIGUES",ra:"MT23134356",rank:23,por:13,m_por:6.5,mat:14,m_mat:7,ing:11,m_ing:9.17,fis:2,m_fis:1.67,qui:3,m_qui:2.5,his:5,m_his:4.17,geo:1,m_geo:0.83,red:"Sim",media:5.08,aprov:0},
+{unidade:"BANGU",nome:"KAIO AMARAL",ra:"MT25198086",rank:24,por:12,m_por:6,mat:9,m_mat:4.5,ing:9,m_ing:7.5,fis:1,m_fis:0.83,qui:3,m_qui:2.5,his:6,m_his:5,geo:8,m_geo:6.67,red:"Sim",media:4.77,aprov:0},
+{unidade:"CAXIAS",nome:"EDUARDO SILVA",ra:"MT23130172",rank:25,por:10,m_por:5,mat:12,m_mat:6,ing:10,m_ing:8.33,fis:1,m_fis:0.83,qui:2,m_qui:1.67,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:4.24,aprov:0},
+{unidade:"TAQUARA",nome:"RODRIGO MIRANDA",ra:"MT23109556",rank:26,por:9,m_por:4.5,mat:6,m_mat:3,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:5,m_qui:4.17,his:3,m_his:2.5,geo:5,m_geo:4.17,red:"Sim",media:4.21,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"FELIPE SANTOS",ra:"MT25200916",rank:28,por:9,m_por:4.5,mat:6,m_mat:3,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:1,m_his:0.83,geo:7,m_geo:5.83,red:"Sim",media:4.04,aprov:0},
+{unidade:"CAXIAS",nome:"WELLINGTON SILVA",ra:"MT22104582",rank:29,por:7,m_por:3.5,mat:8,m_mat:4,ing:11,m_ing:9.17,fis:1,m_fis:0.83,qui:2,m_qui:1.67,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:3.92,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"MIGUEL SANTOS",ra:"MT23120058",rank:30,por:7,m_por:3.5,mat:4,m_mat:2,ing:10,m_ing:8.33,fis:4,m_fis:3.33,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:5,m_geo:4.17,red:"Sim",media:3.77,aprov:0},
+{unidade:"BANGU",nome:"WADRYAN PEREIRA",ra:"MT24160715",rank:31,por:0,m_por:0,mat:9,m_mat:4.5,ing:10,m_ing:8.33,fis:0,m_fis:0,qui:0,m_qui:0,his:8,m_his:6.67,geo:11,m_geo:9.17,red:"Sim",media:3.73,aprov:0},
+{unidade:"CAXIAS",nome:"PATRYCK PEREIRA",ra:"MT26202895",rank:32,por:7,m_por:3.5,mat:10,m_mat:5,ing:7,m_ing:5.83,fis:1,m_fis:0.83,qui:3,m_qui:2.5,his:5,m_his:4.17,geo:4,m_geo:3.33,red:"Sim",media:3.7,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"PEDRO RIBEIRO",ra:"MT22093538",rank:33,por:5,m_por:2.5,mat:3,m_mat:1.5,ing:9,m_ing:7.5,fis:3,m_fis:2.5,qui:3,m_qui:2.5,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:3.55,aprov:0},
+{unidade:"TIJUCA",nome:"ANA GRACIANO",ra:"MT25179557",rank:34,por:5,m_por:2.5,mat:7,m_mat:3.5,ing:7,m_ing:5.83,fis:5,m_fis:4.17,qui:1,m_qui:0.83,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:3.53,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"GABRIEL OLIVEIRA",ra:"MT24148793",rank:35,por:7,m_por:3.5,mat:5,m_mat:2.5,ing:10,m_ing:8.33,fis:1,m_fis:0.83,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:5,m_geo:4.17,red:"Sim",media:3.49,aprov:0},
+{unidade:"BANGU",nome:"FREDERICO MOREIRA",ra:"MT21064118",rank:36,por:4,m_por:2,mat:8,m_mat:4,ing:10,m_ing:8.33,fis:3,m_fis:2.5,qui:1,m_qui:0.83,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:3.49,aprov:0},
+{unidade:"BANGU",nome:"MILLENA FERREIRA",ra:"MT25185935",rank:37,por:4,m_por:2,mat:5,m_mat:2.5,ing:10,m_ing:8.33,fis:2,m_fis:1.67,qui:5,m_qui:4.17,his:4,m_his:3.33,geo:4,m_geo:3.33,red:"Sim",media:3.48,aprov:0},
+{unidade:"TAQUARA",nome:"ALICIA SAMPAIO",ra:"MT25174202",rank:38,por:4,m_por:2,mat:8,m_mat:4,ing:7,m_ing:5.83,fis:1,m_fis:0.83,qui:3,m_qui:2.5,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:3.45,aprov:0},
+{unidade:"BANGU",nome:"GIOVANNA ARRUDA",ra:"MT26202648",rank:39,por:6,m_por:3,mat:3,m_mat:1.5,ing:7,m_ing:5.83,fis:4,m_fis:3.33,qui:3,m_qui:2.5,his:3,m_his:2.5,geo:8,m_geo:6.67,red:"Sim",media:3.44,aprov:0},
+{unidade:"BANGU",nome:"FLAVIO LAMEIRA",ra:"MT23122450",rank:41,por:0,m_por:0,mat:7,m_mat:3.5,ing:12,m_ing:10,fis:0,m_fis:0,qui:0,m_qui:0,his:6,m_his:5,geo:7,m_geo:5.83,red:"Sim",media:3.28,aprov:0},
+{unidade:"TAQUARA",nome:"GUILHERME SILVA",ra:"MT22103170",rank:42,por:0,m_por:0,mat:8,m_mat:4,ing:11,m_ing:9.17,fis:0,m_fis:0,qui:0,m_qui:0,his:6,m_his:5,geo:7,m_geo:5.83,red:"Sim",media:3.26,aprov:0},
+{unidade:"BANGU",nome:"JOSÉ JARDIM",ra:"MT21060264",rank:43,por:0,m_por:0,mat:4,m_mat:2,ing:11,m_ing:9.17,fis:0,m_fis:0,qui:0,m_qui:0,his:8,m_his:6.67,geo:9,m_geo:7.5,red:"Sim",media:3.19,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"ALEXANDRE COELHO",ra:"MT23120405",rank:44,por:0,m_por:0,mat:6,m_mat:3,ing:11,m_ing:9.17,fis:0,m_fis:0,qui:0,m_qui:0,his:8,m_his:6.67,geo:6,m_geo:5,red:"Sim",media:3.14,aprov:0},
+{unidade:"CAXIAS",nome:"VITOR SILVA",ra:"MT25176918",rank:45,por:5,m_por:2.5,mat:10,m_mat:5,ing:0,m_ing:0,fis:8,m_fis:6.67,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:1,m_geo:0.83,red:"Sim",media:3.08,aprov:0},
+{unidade:"BANGU",nome:"LUIZ SILVA",ra:"MT22100549",rank:46,por:14,m_por:7,mat:0,m_mat:0,ing:0,m_ing:0,fis:8,m_fis:6.67,qui:8,m_qui:6.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:3.07,aprov:0},
+{unidade:"BANGU",nome:"GAEL CASTRO",ra:"MT22089825",rank:47,por:5,m_por:2.5,mat:1,m_mat:0.5,ing:10,m_ing:8.33,fis:4,m_fis:3.33,qui:1,m_qui:0.83,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:3.02,aprov:0},
+{unidade:"BANGU",nome:"ALEX FILHO",ra:"MT23120892",rank:48,por:0,m_por:0,mat:5,m_mat:2.5,ing:10,m_ing:8.33,fis:0,m_fis:0,qui:0,m_qui:0,his:4,m_his:3.33,geo:9,m_geo:7.5,red:"Sim",media:2.83,aprov:0},
+{unidade:"TAQUARA",nome:"LARYSSA COSTA",ra:"MT24141913",rank:49,por:4,m_por:2,mat:2,m_mat:1,ing:4,m_ing:3.33,fis:5,m_fis:4.17,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:6,m_geo:5,red:"Sim",media:2.81,aprov:0},
+{unidade:"NOVA IGUACU",nome:"RUAN SANTOS",ra:"MT25166455",rank:50,por:4,m_por:2,mat:5,m_mat:2.5,ing:3,m_ing:2.5,fis:3,m_fis:2.5,qui:2,m_qui:1.67,his:4,m_his:3.33,geo:5,m_geo:4.17,red:"Sim",media:2.57,aprov:0},
+{unidade:"CAXIAS",nome:"RAFAEL JABUR",ra:"MT23115033",rank:51,por:0,m_por:0,mat:9,m_mat:4.5,ing:12,m_ing:10,fis:0,m_fis:0,qui:0,m_qui:0,his:0,m_his:0,geo:2,m_geo:1.67,red:"Sim",media:2.57,aprov:0},
+{unidade:"BANGU",nome:"EDUARDA FERREIRA",ra:"MT26203034",rank:52,por:15,m_por:7.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:8,m_qui:6.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.54,aprov:0},
+{unidade:"BANGU",nome:"VANDERSON RAMOS",ra:"MT26203695",rank:53,por:0,m_por:0,mat:10,m_mat:5,ing:5,m_ing:4.17,fis:0,m_fis:0,qui:0,m_qui:0,his:5,m_his:4.17,geo:6,m_geo:5,red:"Sim",media:2.54,aprov:0},
+{unidade:"BANGU",nome:"RENAN JERONIMO",ra:"MT24153462",rank:54,por:0,m_por:0,mat:2,m_mat:1,ing:12,m_ing:10,fis:0,m_fis:0,qui:0,m_qui:0,his:5,m_his:4.17,geo:5,m_geo:4.17,red:"Sim",media:2.53,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"LEONARDO FERREIRA",ra:"MT22077499",rank:55,por:0,m_por:0,mat:6,m_mat:3,ing:10,m_ing:8.33,fis:0,m_fis:0,qui:0,m_qui:0,his:4,m_his:3.33,geo:4,m_geo:3.33,red:"Sim",media:2.52,aprov:0},
+{unidade:"BANGU",nome:"GABRIELA ARAUJO",ra:"MT24136715",rank:57,por:0,m_por:0,mat:5,m_mat:2.5,ing:10,m_ing:8.33,fis:0,m_fis:0,qui:0,m_qui:0,his:4,m_his:3.33,geo:4,m_geo:3.33,red:"Sim",media:2.42,aprov:0},
+{unidade:"MADUREIRA",nome:"INGRID NASCIMENTO",ra:"MT22098396",rank:58,por:0,m_por:0,mat:9,m_mat:4.5,ing:7,m_ing:5.83,fis:0,m_fis:0,qui:0,m_qui:0,his:3,m_his:2.5,geo:4,m_geo:3.33,red:"Sim",media:2.36,aprov:0},
+{unidade:"MADUREIRA",nome:"DOUGLAS OLIVEIRA",ra:"MT25188186",rank:59,por:0,m_por:0,mat:4,m_mat:2,ing:9,m_ing:7.5,fis:0,m_fis:0,qui:0,m_qui:0,his:4,m_his:3.33,geo:5,m_geo:4.17,red:"Sim",media:2.28,aprov:0},
+{unidade:"MADUREIRA",nome:"HUGO SANTOS",ra:"MT25190232",rank:60,por:0,m_por:0,mat:2,m_mat:1,ing:7,m_ing:5.83,fis:0,m_fis:0,qui:0,m_qui:0,his:6,m_his:5,geo:8,m_geo:6.67,red:"Sim",media:2.24,aprov:0},
+{unidade:"TAQUARA",nome:"GUILHERME PINTO",ra:"MT23132541",rank:62,por:0,m_por:0,mat:3,m_mat:1.5,ing:7,m_ing:5.83,fis:0,m_fis:0,qui:0,m_qui:0,his:5,m_his:4.17,geo:7,m_geo:5.83,red:"Sim",media:2.18,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"JOAO SOUZA",ra:"MT22091391",rank:63,por:0,m_por:0,mat:7,m_mat:3.5,ing:9,m_ing:7.5,fis:0,m_fis:0,qui:0,m_qui:0,his:3,m_his:2.5,geo:1,m_geo:0.83,red:"Sim",media:2.16,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"GUSTAVO ALVES",ra:"MT23133879",rank:64,por:4,m_por:2,mat:5,m_mat:2.5,ing:1,m_ing:0.83,fis:5,m_fis:4.17,qui:0,m_qui:0,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:2.15,aprov:0},
+{unidade:"TIJUCA",nome:"NATHAN SALES",ra:"MT25198839",rank:65,por:12,m_por:6,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:6,m_qui:5,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.08,aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR SANTOS",ra:"MT25171950",rank:66,por:0,m_por:0,mat:2,m_mat:1,ing:7,m_ing:5.83,fis:0,m_fis:0,qui:0,m_qui:0,his:6,m_his:5,geo:6,m_geo:5,red:"Sim",media:2.08,aprov:0},
+{unidade:"TAQUARA",nome:"ERICK SANTOS",ra:"MT24161465",rank:67,por:10,m_por:5,mat:0,m_mat:0,ing:0,m_ing:0,fis:5,m_fis:4.17,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:2.04,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"MATHEUS MACEDO",ra:"MT22089114",rank:69,por:5,m_por:2.5,mat:4,m_mat:2,ing:1,m_ing:0.83,fis:0,m_fis:0,qui:4,m_qui:3.33,his:3,m_his:2.5,geo:3,m_geo:2.5,red:"Sim",media:1.86,aprov:0},
+{unidade:"ROCHA MIRANDA",nome:"JOÃO SILVA",ra:"MT22087597",rank:70,por:0,m_por:0,mat:4,m_mat:2,ing:7,m_ing:5.83,fis:0,m_fis:0,qui:0,m_qui:0,his:4,m_his:3.33,geo:3,m_geo:2.5,red:"Sim",media:1.86,aprov:0},
+{unidade:"CAMPO GRANDE",nome:"DAVI SILVA",ra:"MT25195728",rank:71,por:6,m_por:3,mat:4,m_mat:2,ing:1,m_ing:0.83,fis:1,m_fis:0.83,qui:3,m_qui:2.5,his:2,m_his:1.67,geo:2,m_geo:1.67,red:"Sim",media:1.83,aprov:0},
+{unidade:"MADUREIRA",nome:"ARTHUR CAMPOLIM",ra:"MT22089064",rank:72,por:0,m_por:0,mat:2,m_mat:1,ing:2,m_ing:1.67,fis:0,m_fis:0,qui:0,m_qui:0,his:8,m_his:6.67,geo:7,m_geo:5.83,red:"Sim",media:1.7,aprov:0},
+{unidade:"NOVA IGUACU",nome:"MARCO JUNIOR",ra:"MT25184482",rank:73,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.63,aprov:0},
+{unidade:"CAXIAS",nome:"NATHALIA RODRIGUES",ra:"MT22091284",rank:74,por:0,m_por:0,mat:3,m_mat:1.5,ing:5,m_ing:4.17,fis:0,m_fis:0,qui:0,m_qui:0,his:3,m_his:2.5,geo:5,m_geo:4.17,red:"Sim",media:1.59,aprov:0},
+{unidade:"BANGU",nome:"LIS RAMOS",ra:"MT25197658",rank:75,por:11,m_por:5.5,mat:0,m_mat:0,ing:0,m_ing:0,fis:2,m_fis:1.67,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.52,aprov:0},
+{unidade:"TIJUCA",nome:"GUILHERME DANTAS",ra:"MT25161282",rank:76,por:8,m_por:4,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:4,m_qui:3.33,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.51,aprov:0},
+{unidade:"NOVA IGUACU",nome:"GABRIEL SOUZA",ra:"MT25201021",rank:77,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:4,m_fis:3.33,qui:4,m_qui:3.33,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.43,aprov:0},
+{unidade:"TIJUCA",nome:"VINICIUS GUIMARÃES",ra:"MT25201336",rank:78,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.39,aprov:0},
+{unidade:"TIJUCA",nome:"YASMIN SILVA",ra:"MT25194903",rank:79,por:6,m_por:3,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:4,m_qui:3.33,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:1.31,aprov:0},
+{unidade:"BANGU",nome:"ITALO MATTA",ra:"MT22094353",rank:81,por:2,m_por:1,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:5,m_qui:4.17,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:0.99,aprov:0},
+{unidade:"CAXIAS",nome:"ANNA SILVA",ra:"MT25199621",rank:84,por:2,m_por:1,mat:0,m_mat:0,ing:0,m_ing:0,fis:3,m_fis:2.5,qui:2,m_qui:1.67,his:0,m_his:0,geo:0,m_geo:0,red:"Sim",media:0.74,aprov:0},
+{unidade:"MADUREIRA",nome:"THIAGO JUNIOR",ra:"MT23112485",rank:85,por:0,m_por:0,mat:2,m_mat:1,ing:2,m_ing:1.67,fis:0,m_fis:0,qui:0,m_qui:0,his:1,m_his:0.83,geo:2,m_geo:1.67,red:"Sim",media:0.7,aprov:0},
 ];
 
 
@@ -2140,7 +2620,22 @@ function showSug(){
       [4º Sim 1ºDia] #${a.rank}º — ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'—'}</span>
       ${a.aprov?'<span style="color:#16a34a;font-size:11px">✓ Aprovado</span>':'<span style="color:#dc2626;font-size:11px">✗ Reprovado</span>'}
     </div>`);
-  d.innerHTML=[...r1,...r2,...r3,...r4,...r5,...r6,...r7].join('');
+  
+  const r8=TS5D2.list.filter(a=>norm(a.nome).includes(v)).slice(0,3).map(a=>`
+    <div class="sug-item" onclick="openAlunoS5D2('${esc(a.nome)}')">
+      [5&#186; Sim 2&#186;Dia] #${a.rank}&#186; &#8212; ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'&#8212;'}</span>
+      ${a.aprov?'<span style="color:#16a34a;font-size:11px">&#10003; Aprovado</span>':'<span style="color:#dc2626;font-size:11px">&#10007; Reprovado</span>'}
+    </div>`);
+  const r9=TS6D1.list.filter(a=>norm(a.nome).includes(v)).slice(0,3).map(a=>`
+    <div class="sug-item" onclick="openAlunoS6D1('${esc(a.nome)}')">
+      [6&#186; Sim 1&#186;Dia] #${a.rank}&#186; &#8212; ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'&#8212;'}</span>
+      ${a.aprov?'<span style="color:#16a34a;font-size:11px">&#10003; Aprovado</span>':'<span style="color:#dc2626;font-size:11px">&#10007; Reprovado</span>'}
+    </div>`);
+  const r10=TS6D2.list.filter(a=>norm(a.nome).includes(v)).slice(0,3).map(a=>`
+    <div class="sug-item" onclick="openAlunoS6D2('${esc(a.nome)}')">
+      [6&#186; Sim 2&#186;Dia] #${a.rank}&#186; &#8212; ${a.nome} <span style="color:var(--text3);font-size:11px">${a.unidade||'&#8212;'}</span>
+      ${a.aprov?'<span style="color:#16a34a;font-size:11px">&#10003; Aprovado</span>':'<span style="color:#dc2626;font-size:11px">&#10007; Reprovado</span>'}
+    </div>`);d.innerHTML=[...r1,...r2,...r3,...r4,...r5,...r6,...r7,...r8,...r9,...r10].join('');
 }
 
 function buscar(){
@@ -2223,7 +2718,7 @@ function confirmarRA(){
   }
 
   const nome=modal.dataset.nome;
-  const lista=dia==='2'?T2.list:dia==='s3'?TS3.list:dia==='s3d2'?TS3D2.list:dia==='s4d1'?TS4D1.list:dia==='s4d2'?TS4D2.list:dia==='s5d1'?TS5D1.list:T.list;
+  const lista=dia==='2'?T2.list:dia==='s3'?TS3.list:dia==='s3d2'?TS3D2.list:dia==='s4d1'?TS4D1.list:dia==='s4d2'?TS4D2.list:dia==='s5d1'?TS5D1.list:dia==='s5d2'?TS5D2.list:dia==='s6d1'?TS6D1.list:dia==='s6d2'?TS6D2.list:T.list;
   const candidato=lista.find(a=>a.nome===nome);
   if(!candidato){return;}
   const esperado=(candidato.ra||'').toUpperCase();
@@ -2260,6 +2755,33 @@ function confirmarRA(){
     if(atualS4D2.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atualS4D2.rank}\u00ba - 4\u00ba Simulado`;}
     else dd.style.display='none';
     buildNotasS4D2();buildGraficoS4D2();buildRelatorioS4D2();buildChanceS4D2();buildPlanoS4D2();
+  } else if(dia==='s5d2'){
+    atualS5D2=candidato;
+    secaoOrigem='rankingS5D2';
+    document.getElementById('dashNome').textContent=atualS5D2.nome;
+    document.getElementById('dashInfo').textContent=`#${atualS5D2.rank}Âº â€“ 5Âº Simulado 2Âº Dia â€“ ${atualS5D2.unidade||'-'} â€“ MP ${atualS5D2.media.toFixed(2)} â€“ ${atualS5D2.aprov?'âœ“ Aprovado':'âœ— '+atualS5D2.motivo}`;
+    const dd=document.getElementById('destDiv');
+    if(atualS5D2.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atualS5D2.rank}Âº â€“ 5Âº Simulado`;}
+    else dd.style.display='none';
+    buildNotasS5D2();buildGraficoS5D2();buildRelatorioS5D2();buildChanceS5D2();buildPlanoS5D2();
+  } else if(dia==='s6d1'){
+    atualS6D1=candidato;
+    secaoOrigem='rankingS6D1';
+    document.getElementById('dashNome').textContent=atualS6D1.nome;
+    document.getElementById('dashInfo').textContent=`#${atualS6D1.rank}Âº â€“ 6Âº Simulado 1Âº Dia â€“ ${atualS6D1.unidade||'-'} â€“ MP ${atualS6D1.media.toFixed(2)} â€“ ${atualS6D1.aprov?'âœ“ Aprovado':'âœ— '+atualS6D1.motivo}`;
+    const dd=document.getElementById('destDiv');
+    if(atualS6D1.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atualS6D1.rank}Âº â€“ 6Âº Simulado`;}
+    else dd.style.display='none';
+    buildNotasS6D1();buildGraficoS6D1();buildRelatorioS6D1();buildChanceS6D1();buildPlanoS6D1();
+  } else if(dia==='s6d2'){
+    atualS6D2=candidato;
+    secaoOrigem='rankingS6D2';
+    document.getElementById('dashNome').textContent=atualS6D2.nome;
+    document.getElementById('dashInfo').textContent=`#${atualS6D2.rank}Âº â€“ 6Âº Simulado 2Âº Dia â€“ ${atualS6D2.unidade||'-'} â€“ MP ${atualS6D2.media.toFixed(2)} â€“ ${atualS6D2.aprov?'âœ“ Aprovado':'âœ— '+atualS6D2.motivo}`;
+    const dd=document.getElementById('destDiv');
+    if(atualS6D2.rank<=5){dd.style.display='block';document.getElementById('destText').textContent=`#${atualS6D2.rank}Âº â€“ 6Âº Simulado`;}
+    else dd.style.display='none';
+    buildNotasS6D2();buildGraficoS6D2();buildRelatorioS6D2();buildChanceS6D2();buildPlanoS6D2();
   } else if(dia==='s3d2'){
     atualS3D2=candidato;
     secaoOrigem='rankingS3D2';
@@ -2675,7 +3197,7 @@ function voltar(){
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.querySelectorAll('.nav-sub').forEach(x=>x.classList.remove('open'));
   document.querySelectorAll('.nav-group-btn').forEach(x=>x.classList.remove('active'));
-  const navMap={rankingGeral:'navRankingGeral',ranking:'navRanking',ranking2:'navRanking2',geralS2:'navGeralS2',rankingS3:'navRankingS3',rankingS3D2:'navRankingS3D2',geralS3:'navGeralS3',rankingS4D1:'navRankingS4D1',rankingS4D2:'navRankingS4D2',rankingS5D1:'navRankingS5D1',busca:'navBusca'};
+  const navMap={rankingGeral:'navRankingGeral',ranking:'navRanking',ranking2:'navRanking2',geralS2:'navGeralS2',rankingS3:'navRankingS3',rankingS3D2:'navRankingS3D2',geralS3:'navGeralS3',rankingS4D1:'navRankingS4D1',rankingS4D2:'navRankingS4D2',geralS4:'navGeralS4',rankingS5D1:'navRankingS5D1',rankingS5D2:'navRankingS5D2',geralS5:'navGeralS5',rankingS6D1:'navRankingS6D1',rankingS6D2:'navRankingS6D2',busca:'navBusca'};
   const navId=navMap[secaoOrigem]||'navRanking';
   const navBtn=document.getElementById(navId);
   if(navBtn){
@@ -4587,6 +5109,271 @@ const TS5D1=buildTurmaS5D1(RAW_S5D1);
   });
 })();
 
+
+function buildTurmaS5D2(raw){
+  raw.forEach(a=>{
+    // 2o dia: Mat/Ing/His/Geo + Red (aprovacao do dia)
+    a.ok_mat = a.m_mat >= 2.5;
+    a.ok_ing = a.m_ing >= 4.17;
+    a.ok_his = a.m_his >= 4.17;
+    a.ok_geo = a.m_geo >= 4.17;
+    a.ok_red = a.red === 'Sim';
+    a.aprov  = a.ok_mat && a.ok_ing && a.ok_his && a.ok_geo && a.ok_red;
+    // geral (todos os 7): Por/Fis/Qui do 1o dia tb
+    a.ok_por = a.m_por >= 4.5;
+    a.ok_fis = a.m_fis >= 3.33;
+    a.ok_qui = a.m_qui >= 3.33;
+    a.aprovGeral = a.ok_por && a.ok_mat && a.ok_ing && a.ok_fis && a.ok_qui && a.ok_his && a.ok_geo && a.ok_red;
+    a.gtot   = a.mat + a.ing + (a.his||0) + (a.geo||0);
+    a.gtotAll= a.por + a.mat + a.ing + a.fis + a.qui + (a.his||0) + (a.geo||0);
+    const f=[];
+    if(!a.ok_mat) f.push('MatemÃ¡tica');
+    if(!a.ok_ing) f.push('InglÃªs');
+    if(!a.ok_his) f.push('HistÃ³ria');
+    if(!a.ok_geo) f.push('Geografia');
+    if(!a.ok_red) f.push('RedaÃ§Ã£o');
+    a.motivo = f.length ? f.join(', ')+' abaixo da mediana' : '';
+    const fg=[];
+    if(!a.ok_por) fg.push('PortuguÃªs');
+    if(!a.ok_mat) fg.push('MatemÃ¡tica');
+    if(!a.ok_ing) fg.push('InglÃªs');
+    if(!a.ok_fis) fg.push('FÃ­sica');
+    if(!a.ok_qui) fg.push('QuÃ­mica');
+    if(!a.ok_his) fg.push('HistÃ³ria');
+    if(!a.ok_geo) fg.push('Geografia');
+    if(!a.ok_red) fg.push('RedaÃ§Ã£o');
+    a.motivoGeral = fg.length ? fg.join(', ')+' abaixo da mediana' : '';
+  });
+  const apv=raw.filter(a=>a.aprov).sort((a,b)=>b.media-a.media||(b.m_mat-a.m_mat));
+  const rep=raw.filter(a=>!a.aprov).sort((a,b)=>b.media-a.media||(b.m_mat-a.m_mat));
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rank=i+1);
+  const avg=k=>sorted.reduce((s,x)=>s+(x[k]||0),0)/sorted.length;
+  return{list:sorted,avgs:{mat:avg('m_mat'),ing:avg('m_ing'),his:avg('m_his'),geo:avg('m_geo'),media:avg('media')}};
+}
+const TS5D2=buildTurmaS5D2(RAW_S5D2);
+(()=>{
+  const sel=document.getElementById('uniSelRkS5D2');
+  [...new Set(TS5D2.list.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+function buildTurmaS6D1(raw){
+  raw.forEach(a=>{
+    a.ok_port = a.m_port >= 3.0;
+    a.ok_fisi = a.m_fisi >= 1.67;
+    a.ok_quim = a.m_quim >= 2.5;
+    a.ok_red  = a.red === 'Sim';
+    a.aprov   = a.ok_port && a.ok_fisi && a.ok_quim && a.ok_red;
+    a.gtot    = a.port + a.fisi + a.quim;
+    const f=[];
+    if(!a.ok_port) f.push('PortuguÃªs');
+    if(!a.ok_fisi) f.push('FÃ­sica');
+    if(!a.ok_quim) f.push('QuÃ­mica');
+    if(!a.ok_red)  f.push('RedaÃ§Ã£o');
+    a.motivo = f.length ? f.join(', ')+' abaixo da mediana' : '';
+  });
+  const apv=raw.filter(a=>a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const rep=raw.filter(a=>!a.aprov).sort((a,b)=>b.media-a.media||(b.m_port-a.m_port));
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rank=i+1);
+  const avg=k=>sorted.reduce((s,x)=>s+(x[k]||0),0)/sorted.length;
+  return{list:sorted,avgs:{port:avg('m_port'),fisi:avg('m_fisi'),quim:avg('m_quim'),media:avg('media')}};
+}
+const TS6D1=buildTurmaS6D1(RAW_S6D1);
+(()=>{
+  const sel=document.getElementById('uniSelRkS6D1');
+  [...new Set(TS6D1.list.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+function buildTurmaS6D2(raw){
+  raw.forEach(a=>{
+    // 2o dia: Mat/Ing/His/Geo + Red
+    a.ok_mat = a.m_mat >= 2.5;
+    a.ok_ing = a.m_ing >= 4.17;
+    a.ok_his = a.m_his >= 4.17;
+    a.ok_geo = a.m_geo >= 4.17;
+    a.ok_red = a.red === 'Sim';
+    a.aprov  = a.ok_mat && a.ok_ing && a.ok_his && a.ok_geo && a.ok_red;
+    // geral (todos os 7): Por/Fis/Qui do 1o dia tb
+    a.ok_por = a.m_por >= 3.0;
+    a.ok_fis = a.m_fis >= 1.67;
+    a.ok_qui = a.m_qui >= 2.5;
+    a.aprovGeral = a.ok_por && a.ok_mat && a.ok_ing && a.ok_fis && a.ok_qui && a.ok_his && a.ok_geo && a.ok_red;
+    a.gtot   = a.mat + a.ing + (a.his||0) + (a.geo||0);
+    a.gtotAll= a.por + a.mat + a.ing + a.fis + a.qui + (a.his||0) + (a.geo||0);
+    const f=[];
+    if(!a.ok_mat) f.push('MatemÃ¡tica');
+    if(!a.ok_ing) f.push('InglÃªs');
+    if(!a.ok_his) f.push('HistÃ³ria');
+    if(!a.ok_geo) f.push('Geografia');
+    if(!a.ok_red) f.push('RedaÃ§Ã£o');
+    a.motivo = f.length ? f.join(', ')+' abaixo da mediana' : '';
+    const fg=[];
+    if(!a.ok_por) fg.push('PortuguÃªs');
+    if(!a.ok_mat) fg.push('MatemÃ¡tica');
+    if(!a.ok_ing) fg.push('InglÃªs');
+    if(!a.ok_fis) fg.push('FÃ­sica');
+    if(!a.ok_qui) fg.push('QuÃ­mica');
+    if(!a.ok_his) fg.push('HistÃ³ria');
+    if(!a.ok_geo) fg.push('Geografia');
+    if(!a.ok_red) fg.push('RedaÃ§Ã£o');
+    a.motivoGeral = fg.length ? fg.join(', ')+' abaixo da mediana' : '';
+  });
+  const apv=raw.filter(a=>a.aprov).sort((a,b)=>b.media-a.media||(b.m_mat-a.m_mat));
+  const rep=raw.filter(a=>!a.aprov).sort((a,b)=>b.media-a.media||(b.m_mat-a.m_mat));
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rank=i+1);
+  const avg=k=>sorted.reduce((s,x)=>s+(x[k]||0),0)/sorted.length;
+  return{list:sorted,avgs:{mat:avg('m_mat'),ing:avg('m_ing'),his:avg('m_his'),geo:avg('m_geo'),media:avg('media')}};
+}
+const TS6D2=buildTurmaS6D2(RAW_S6D2);
+(()=>{
+  const sel=document.getElementById('uniSelRkS6D2');
+  [...new Set(TS6D2.list.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+function buildTurmaGeralS4(){
+  // TS5D2 tem todos os 7 campos; aprovGeral usa todos os 7 medianas
+  const list=TS5D2.list.map(a=>{
+    const mpG=+((a.m_por*2+a.m_mat*2+a.m_ing*1.5+a.m_fis*1.5+a.m_qui+(a.m_his||0)+(a.m_geo||0))/10).toFixed(4);
+    return {ra:a.ra,nome:a.nome,unidade:a.unidade,
+      por:a.por,m_por:a.m_por,mat:a.mat,m_mat:a.m_mat,ing:a.ing,m_ing:a.m_ing,
+      fis:a.fis,m_fis:a.m_fis,qui:a.qui,m_qui:a.m_qui,his:a.his||0,m_his:a.m_his||0,geo:a.geo||0,m_geo:a.m_geo||0,
+      red:a.red,
+      ok_por:a.ok_por,ok_mat:a.ok_mat,ok_ing:a.ok_ing,ok_fis:a.ok_fis,ok_qui:a.ok_qui,ok_his:a.ok_his,ok_geo:a.ok_geo,ok_red:a.ok_red,
+      aprovGeral:a.aprovGeral,mpGeral:mpG};
+  });
+  const apv=list.filter(a=>a.aprovGeral).sort((a,b)=>b.mpGeral-a.mpGeral);
+  const rep=list.filter(a=>!a.aprovGeral).sort((a,b)=>b.mpGeral-a.mpGeral);
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rankG=i+1);
+  return sorted;
+}
+const TGS4=buildTurmaGeralS4();
+(()=>{
+  const sel=document.getElementById('uniSelGeralS4');
+  [...new Set(TGS4.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+function buildTurmaGeralS5(){
+  const list=TS6D2.list.map(a=>{
+    const mpG=+((a.m_por*2+a.m_mat*2+a.m_ing*1.5+a.m_fis*1.5+a.m_qui+(a.m_his||0)+(a.m_geo||0))/10).toFixed(4);
+    return {ra:a.ra,nome:a.nome,unidade:a.unidade,
+      por:a.por,m_por:a.m_por,mat:a.mat,m_mat:a.m_mat,ing:a.ing,m_ing:a.m_ing,
+      fis:a.fis,m_fis:a.m_fis,qui:a.qui,m_qui:a.m_qui,his:a.his||0,m_his:a.m_his||0,geo:a.geo||0,m_geo:a.m_geo||0,
+      red:a.red,
+      ok_por:a.ok_por,ok_mat:a.ok_mat,ok_ing:a.ok_ing,ok_fis:a.ok_fis,ok_qui:a.ok_qui,ok_his:a.ok_his,ok_geo:a.ok_geo,ok_red:a.ok_red,
+      aprovGeral:a.aprovGeral,mpGeral:mpG};
+  });
+  const apv=list.filter(a=>a.aprovGeral).sort((a,b)=>b.mpGeral-a.mpGeral);
+  const rep=list.filter(a=>!a.aprovGeral).sort((a,b)=>b.mpGeral-a.mpGeral);
+  const sorted=[...apv,...rep];
+  sorted.forEach((a,i)=>a.rankG=i+1);
+  return sorted;
+}
+const TGS5=buildTurmaGeralS5();
+(()=>{
+  const sel=document.getElementById('uniSelGeralS5');
+  [...new Set(TGS5.filter(a=>a.unidade).map(a=>a.unidade))].sort().forEach(u=>{
+    const o=document.createElement('option');o.value=u;o.textContent=u;sel.appendChild(o);
+  });
+})();
+
+let fGeralS4='todos';
+function renderGeralS4(){
+  const q=(document.getElementById('searchGeralS4').value||'').toLowerCase();
+  let lst=[...TGS4].filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fGeralS4==='aprov')   lst=lst.filter(a=>a.aprovGeral);
+  if(fGeralS4==='reprov')  lst=lst.filter(a=>!a.aprovGeral);
+  if(fGeralS4==='unidade'){const v=document.getElementById('uniSelGeralS4').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TGS4.length, apvN=TGS4.filter(a=>a.aprovGeral).length;
+  document.getElementById('totalGeralS4').textContent=tot;
+  document.getElementById('aprovGeralS4').textContent=apvN;
+  document.getElementById('reprovGeralS4').textContent=tot-apvN;
+  const col=a=>k=>a['ok_'+k]?'#16a34a':'#dc2626';
+  document.getElementById('bodyGeralS4').innerHTML=lst.map(a=>{
+    const p=a.rankG,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprovGeral?'<span class="chip chip-aprov">âœ“ Aprovado</span>':'<span class="chip chip-reprov">âœ— Reprovado</span>';
+    const c=col(a);
+    return `<tr class="${rc}">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'-'}</span></td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('por')}">${a.por}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('mat')}">${a.mat}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('ing')}">${a.ing}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('fis')}">${a.fis}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('qui')}">${a.qui}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('his')}">${a.his}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('geo')}">${a.geo}</td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:var(--army)">${a.mpGeral.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  const avgs={por:TGS4.reduce((s,x)=>s+x.m_por,0)/TGS4.length,mat:TGS4.reduce((s,x)=>s+x.m_mat,0)/TGS4.length,ing:TGS4.reduce((s,x)=>s+x.m_ing,0)/TGS4.length,his:TGS4.reduce((s,x)=>s+x.m_his,0)/TGS4.length,geo:TGS4.reduce((s,x)=>s+x.m_geo,0)/TGS4.length,media:TGS4.reduce((s,x)=>s+x.mpGeral,0)/TGS4.length};
+  const _nm={por:'MÃ©dia Por',mat:'MÃ©dia Mat',ing:'MÃ©dia Ing',his:'MÃ©dia His',geo:'MÃ©dia Geo',media:'MP Geral'};
+  document.getElementById('statsGeralS4').innerHTML=Object.entries(avgs).map(([k,v])=>`<div class="stat-item"><div class="s-label">${_nm[k]}</div><div class="s-val" style="font-size:20px">${v.toFixed(2)}</div></div>`).join('');
+}
+function setFGeralS4(f,btn){
+  fGeralS4=f;
+  document.querySelectorAll('#geralS4Section .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapGeralS4').style.display=f==='unidade'?'block':'none';
+  renderGeralS4();
+}
+
+let fGeralS5='todos';
+function renderGeralS5(){
+  const q=(document.getElementById('searchGeralS5').value||'').toLowerCase();
+  let lst=[...TGS5].filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fGeralS5==='aprov')   lst=lst.filter(a=>a.aprovGeral);
+  if(fGeralS5==='reprov')  lst=lst.filter(a=>!a.aprovGeral);
+  if(fGeralS5==='unidade'){const v=document.getElementById('uniSelGeralS5').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TGS5.length, apvN=TGS5.filter(a=>a.aprovGeral).length;
+  document.getElementById('totalGeralS5').textContent=tot;
+  document.getElementById('aprovGeralS5').textContent=apvN;
+  document.getElementById('reprovGeralS5').textContent=tot-apvN;
+  const col=a=>k=>a['ok_'+k]?'#16a34a':'#dc2626';
+  document.getElementById('bodyGeralS5').innerHTML=lst.map(a=>{
+    const p=a.rankG,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprovGeral?'<span class="chip chip-aprov">âœ“ Aprovado</span>':'<span class="chip chip-reprov">âœ— Reprovado</span>';
+    const c=col(a);
+    return `<tr class="${rc}">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'-'}</span></td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('por')}">${a.por}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('mat')}">${a.mat}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('ing')}">${a.ing}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('fis')}">${a.fis}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('qui')}">${a.qui}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('his')}">${a.his}</td>
+      <td style="font-size:15px;font-weight:900;text-align:center;color:${c('geo')}">${a.geo}</td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:var(--army)">${a.mpGeral.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  const avgs={por:TGS5.reduce((s,x)=>s+x.m_por,0)/TGS5.length,mat:TGS5.reduce((s,x)=>s+x.m_mat,0)/TGS5.length,ing:TGS5.reduce((s,x)=>s+x.m_ing,0)/TGS5.length,his:TGS5.reduce((s,x)=>s+x.m_his,0)/TGS5.length,geo:TGS5.reduce((s,x)=>s+x.m_geo,0)/TGS5.length,media:TGS5.reduce((s,x)=>s+x.mpGeral,0)/TGS5.length};
+  const _nm={por:'MÃ©dia Por',mat:'MÃ©dia Mat',ing:'MÃ©dia Ing',his:'MÃ©dia His',geo:'MÃ©dia Geo',media:'MP Geral'};
+  document.getElementById('statsGeralS5').innerHTML=Object.entries(avgs).map(([k,v])=>`<div class="stat-item"><div class="s-label">${_nm[k]}</div><div class="s-val" style="font-size:20px">${v.toFixed(2)}</div></div>`).join('');
+}
+function setFGeralS5(f,btn){
+  fGeralS5=f;
+  document.querySelectorAll('#geralS5Section .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapGeralS5').style.display=f==='unidade'?'block':'none';
+  renderGeralS5();
+}
 function buildTurmaS4D2(raw){
   raw.forEach(a=>{
     a.ok_mat = a.m_mat >= 2.5;
@@ -4993,6 +5780,167 @@ function buildPlanoS4D1(){
   document.getElementById('pPlano').innerHTML=_planoHTML(a.nome,discs,a.media,a.ok_red,'3º Simulado 1º Dia','28/03/2026');
 }
 
+
+let fRkS5D2='todos', atualS5D2=null;
+function renderRankingS5D2(){
+  const q=(document.getElementById('searchRkS5D2').value||'').toLowerCase();
+  let lst=TS5D2.list.filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fRkS5D2==='aprov')  lst=lst.filter(a=>a.aprov);
+  if(fRkS5D2==='reprov') lst=lst.filter(a=>!a.aprov);
+  if(fRkS5D2==='unidade'){const v=document.getElementById('uniSelRkS5D2').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TS5D2.list.length, apvN=TS5D2.list.filter(a=>a.aprov).length;
+  document.getElementById('totalRkS5D2').textContent=tot;
+  document.getElementById('aprovRkS5D2').textContent=apvN;
+  document.getElementById('reprovRkS5D2').textContent=tot-apvN;
+  document.getElementById('bodyRkS5D2').innerHTML=lst.map(a=>{
+    const p=a.rank,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprov?'<span class="chip chip-aprov">âœ“ Aprovado</span>':'<span class="chip chip-reprov">âœ— Reprovado</span>';
+    const redCor=a.ok_red?'#16a34a':'#dc2626';
+    return `<tr class="${rc}" onclick="openAlunoS5D2('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'-'}${!a.aprov?' â€“ '+a.motivo:''}</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_mat?'#16a34a':'#dc2626'}">${a.mat}<span style="font-size:10px;color:var(--text3)">/20</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_ing?'#16a34a':'#dc2626'}">${a.ing}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_his?'#16a34a':'#dc2626'}">${a.his}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_geo?'#16a34a':'#dc2626'}">${a.geo}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:14px;font-weight:900;text-align:center;color:${redCor}">${a.red}</td>
+      <td style="font-size:24px;font-weight:900;text-align:center;color:var(--army)">${a.media.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  const _nm={mat:'MatemÃ¡tica',ing:'InglÃªs',his:'HistÃ³ria',geo:'Geografia',media:'MÃ©dia'};
+  document.getElementById('statsRkS5D2').innerHTML=Object.entries(TS5D2.avgs).map(([k,v])=>
+    `<div class="stat-item"><div class="s-label">MÃ©dia ${_nm[k]||k}</div><div class="s-val" style="font-size:20px">${v.toFixed(2)}</div></div>`
+  ).join('');
+}
+function setFRkS5D2(f,btn){
+  fRkS5D2=f;
+  document.querySelectorAll('#rankingS5D2Section .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapRkS5D2').style.display=f==='unidade'?'block':'none';
+  renderGeralS4();
+  renderGeralS5();
+  renderRankingS5D2();
+}
+function openAlunoS5D2(nome){
+  const candidato=TS5D2.list.find(a=>a.nome===nome);
+  if(!candidato)return;
+  const modal=document.getElementById('raModal');
+  document.getElementById('raInput').value='';
+  document.getElementById('raError').style.display='none';
+  modal.dataset.nome=nome;
+  modal.dataset.dia='s5d2';
+  modal.style.display='flex';
+  setTimeout(()=>document.getElementById('raInput').focus(),100);
+}
+
+let fRkS6D1='todos', atualS6D1=null;
+function renderRankingS6D1(){
+  const q=(document.getElementById('searchRkS6D1').value||'').toLowerCase();
+  let lst=TS6D1.list.filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fRkS6D1==='aprov')  lst=lst.filter(a=>a.aprov);
+  if(fRkS6D1==='reprov') lst=lst.filter(a=>!a.aprov);
+  if(fRkS6D1==='unidade'){const v=document.getElementById('uniSelRkS6D1').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TS6D1.list.length, apvN=TS6D1.list.filter(a=>a.aprov).length;
+  document.getElementById('totalRkS6D1').textContent=tot;
+  document.getElementById('aprovRkS6D1').textContent=apvN;
+  document.getElementById('reprovRkS6D1').textContent=tot-apvN;
+  document.getElementById('bodyRkS6D1').innerHTML=lst.map(a=>{
+    const p=a.rank,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprov?'<span class="chip chip-aprov">âœ“ Aprovado</span>':'<span class="chip chip-reprov">âœ— Reprovado</span>';
+    return `<tr class="${rc}" onclick="openAlunoS6D1('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'-'}${!a.aprov?' â€“ '+a.motivo:''}</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_port?'#16a34a':'#dc2626'}">${a.port}<span style="font-size:11px;color:var(--text3)">/20</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_fisi?'#16a34a':'#dc2626'}">${a.fisi}<span style="font-size:11px;color:var(--text3)">/12</span></td>
+      <td style="font-size:22px;font-weight:900;text-align:center;color:${a.ok_quim?'#16a34a':'#dc2626'}">${a.quim}<span style="font-size:11px;color:var(--text3)">/12</span></td>
+      <td style="font-size:14px;font-weight:900;text-align:center;color:${a.ok_red?'#16a34a':'#dc2626'}">${a.red}</td>
+      <td style="font-size:26px;font-weight:900;text-align:center;color:var(--army)">${a.media.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  document.getElementById('statsRkS6D1').innerHTML=`
+    <div class="stat-item"><div class="s-label">Total</div><div class="s-val">${tot}</div><div class="s-hint">participantes</div></div>
+    <div class="stat-item"><div class="s-label">Aprovados</div><div class="s-val" style="color:var(--green)">${apvN}</div><div class="s-hint">${Math.round(apvN/tot*100)||0}%</div></div>
+    <div class="stat-item"><div class="s-label">MÃ©d PortuguÃªs</div><div class="s-val">${TS6D1.avgs.port.toFixed(2)}</div></div>
+    <div class="stat-item"><div class="s-label">MÃ©d FÃ­sica</div><div class="s-val">${TS6D1.avgs.fisi.toFixed(2)}</div></div>
+    <div class="stat-item"><div class="s-label">MÃ©d QuÃ­mica</div><div class="s-val">${TS6D1.avgs.quim.toFixed(2)}</div></div>`;
+}
+function setFRkS6D1(f,btn){
+  fRkS6D1=f;
+  document.querySelectorAll('#rankingS6D1Section .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapRkS6D1').style.display=f==='unidade'?'block':'none';
+  renderRankingS6D1();
+}
+function openAlunoS6D1(nome){
+  const candidato=TS6D1.list.find(a=>a.nome===nome);
+  if(!candidato)return;
+  const modal=document.getElementById('raModal');
+  document.getElementById('raInput').value='';
+  document.getElementById('raError').style.display='none';
+  modal.dataset.nome=nome;
+  modal.dataset.dia='s6d1';
+  modal.style.display='flex';
+  setTimeout(()=>document.getElementById('raInput').focus(),100);
+}
+
+let fRkS6D2='todos', atualS6D2=null;
+function renderRankingS6D2(){
+  const q=(document.getElementById('searchRkS6D2').value||'').toLowerCase();
+  let lst=TS6D2.list.filter(a=>!q||a.nome.toLowerCase().includes(q));
+  if(fRkS6D2==='aprov')  lst=lst.filter(a=>a.aprov);
+  if(fRkS6D2==='reprov') lst=lst.filter(a=>!a.aprov);
+  if(fRkS6D2==='unidade'){const v=document.getElementById('uniSelRkS6D2').value;if(v)lst=lst.filter(a=>a.unidade===v);}
+  const tot=TS6D2.list.length, apvN=TS6D2.list.filter(a=>a.aprov).length;
+  document.getElementById('totalRkS6D2').textContent=tot;
+  document.getElementById('aprovRkS6D2').textContent=apvN;
+  document.getElementById('reprovRkS6D2').textContent=tot-apvN;
+  document.getElementById('bodyRkS6D2').innerHTML=lst.map(a=>{
+    const p=a.rank,pc=p===1?'g1':p===2?'g2':p===3?'g3':'';
+    const em=p===1?'🥇':p===2?'🥈':p===3?'🥉':p;
+    const rc='ranking-row'+(p<=3?' top3':'');
+    const st=a.aprov?'<span class="chip chip-aprov">âœ“ Aprovado</span>':'<span class="chip chip-reprov">âœ— Reprovado</span>';
+    const redCor=a.ok_red?'#16a34a':'#dc2626';
+    return `<tr class="${rc}" onclick="openAlunoS6D2('${a.nome.replace(/'/g,"\\'").replace(/"/g,'&quot;')}')">
+      <td style="text-align:center"><span class="pos-badge ${pc}">${em}</span></td>
+      <td style="padding-left:14px"><span class="aluno-nome">${a.nome}</span><span class="aluno-meta">${a.unidade||'-'}${!a.aprov?' â€“ '+a.motivo:''}</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_mat?'#16a34a':'#dc2626'}">${a.mat}<span style="font-size:10px;color:var(--text3)">/20</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_ing?'#16a34a':'#dc2626'}">${a.ing}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_his?'#16a34a':'#dc2626'}">${a.his}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:20px;font-weight:900;text-align:center;color:${a.ok_geo?'#16a34a':'#dc2626'}">${a.geo}<span style="font-size:10px;color:var(--text3)">/12</span></td>
+      <td style="font-size:14px;font-weight:900;text-align:center;color:${redCor}">${a.red}</td>
+      <td style="font-size:24px;font-weight:900;text-align:center;color:var(--army)">${a.media.toFixed(2)}</td>
+      <td style="text-align:center">${st}</td>
+    </tr>`;
+  }).join('');
+  const _nm={mat:'MatemÃ¡tica',ing:'InglÃªs',his:'HistÃ³ria',geo:'Geografia',media:'MÃ©dia'};
+  document.getElementById('statsRkS6D2').innerHTML=Object.entries(TS6D2.avgs).map(([k,v])=>
+    `<div class="stat-item"><div class="s-label">MÃ©dia ${_nm[k]||k}</div><div class="s-val" style="font-size:20px">${v.toFixed(2)}</div></div>`
+  ).join('');
+}
+function setFRkS6D2(f,btn){
+  fRkS6D2=f;
+  document.querySelectorAll('#rankingS6D2Section .filter-btn').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('uniWrapRkS6D2').style.display=f==='unidade'?'block':'none';
+  renderRankingS6D2();
+}
+function openAlunoS6D2(nome){
+  const candidato=TS6D2.list.find(a=>a.nome===nome);
+  if(!candidato)return;
+  const modal=document.getElementById('raModal');
+  document.getElementById('raInput').value='';
+  document.getElementById('raError').style.display='none';
+  modal.dataset.nome=nome;
+  modal.dataset.dia='s6d2';
+  modal.style.display='flex';
+  setTimeout(()=>document.getElementById('raInput').focus(),100);
+}
 let fRkS5D1='todos', atualS5D1=null;
 function renderRankingS5D1(){
   const q=(document.getElementById('searchRkS5D1').value||'').toLowerCase();
@@ -5036,6 +5984,11 @@ function setFRkS5D1(f,btn){
   btn.classList.add('active');
   document.getElementById('uniWrapRkS5D1').style.display=f==='unidade'?'block':'none';
   renderRankingS5D1();
+  renderGeralS4();
+  renderGeralS5();
+  renderRankingS5D2();
+  renderRankingS6D1();
+  renderRankingS6D2();
 }
 function openAlunoS5D1(nome){
   const candidato=TS5D1.list.find(a=>a.nome===nome);
@@ -5047,6 +6000,306 @@ function openAlunoS5D1(nome){
   modal.dataset.dia='s5d1';
   modal.style.display='flex';
   setTimeout(()=>document.getElementById('raInput').focus(),100);
+}
+
+function buildNotasS5D2(){
+  const a=atualS5D2;
+  document.getElementById('pNotas').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“‹ Resumo â€“ 5Âº Simulado â€“ 2Âº Dia</h2></div>
+    <p class="card-sub">25/04/2026 â€“ Medianas: Por 4,50 â€¢ Mat 2,50 â€¢ Ing 4,17 â€¢ FÃ­s 3,33 â€¢ QuÃ­m 3,33 â€¢ His 4,17 â€¢ Geo 4,17</p>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="s-label">ClassificaÃ§Ã£o</div><div class="s-val" style="color:var(--army)">#${a.rank}Âº</div><div class="s-hint">de ${TS5D2.list.length} alunos</div></div>
+      <div class="stat-item"><div class="s-label">Total Acertos</div><div class="s-val">${a.gtot}</div></div>
+      <div class="stat-item"><div class="s-label">MÃ©dia Ponderada</div><div class="s-val" style="color:${a.aprov?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div></div>
+      <div class="stat-item"><div class="s-label">RedaÃ§Ã£o</div><div class="s-val" style="font-size:28px">${a.ok_red?'âœ“':'âœ—'}</div><div class="s-hint">${a.ok_red?'Entregue':'NÃ£o entregue'}</div></div>
+      <div class="stat-item"><div class="s-label">Resultado</div><div class="s-val" style="font-size:28px">${a.aprov?'âœ“':'âœ—'}</div><div class="s-hint">${a.aprov?'Aprovado':a.motivo||'Reprovado'}</div></div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“š Desempenho por Disciplina</h2></div>
+    <div class="disc-grid">
+      <div class="disc-card ${a.ok_por?'pass':'fail'}"><div class="dc-name">PortuguÃªs</div><div class="dc-val">${a.por}</div><div class="dc-max">de 20 â€“ nota ${a.m_por.toFixed(2)} â€“ med 4,50</div>${a.ok_por?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_mat?'pass':'fail'}"><div class="dc-name">MatemÃ¡tica</div><div class="dc-val">${a.mat}</div><div class="dc-max">de 20 â€“ nota ${a.m_mat.toFixed(2)} â€“ med 2,50</div>${a.ok_mat?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_ing?'pass':'fail'}"><div class="dc-name">InglÃªs</div><div class="dc-val">${a.ing}</div><div class="dc-max">de 12 â€“ nota ${a.m_ing.toFixed(2)} â€“ med 4,17</div>${a.ok_ing?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_fis?'pass':'fail'}"><div class="dc-name">FÃ­sica</div><div class="dc-val">${a.fis}</div><div class="dc-max">de 12 â€“ nota ${a.m_fis.toFixed(2)} â€“ med 3,33</div>${a.ok_fis?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_qui?'pass':'fail'}"><div class="dc-name">QuÃ­mica</div><div class="dc-val">${a.qui}</div><div class="dc-max">de 12 â€“ nota ${a.m_qui.toFixed(2)} â€“ med 3,33</div>${a.ok_qui?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_his?'pass':'fail'}"><div class="dc-name">HistÃ³ria</div><div class="dc-val">${a.his}</div><div class="dc-max">de 12 â€“ nota ${a.m_his.toFixed(2)} â€“ med 4,17</div>${a.ok_his?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_geo?'pass':'fail'}"><div class="dc-name">Geografia</div><div class="dc-val">${a.geo}</div><div class="dc-max">de 12 â€“ nota ${a.m_geo.toFixed(2)} â€“ med 4,17</div>${a.ok_geo?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+    </div>
+  </div>`;
+}
+function buildGraficoS5D2(){
+  const a=atualS5D2,topN=10;
+  const topList=TS5D2.list.slice(0,topN);
+  const tP=topList.reduce((s,x)=>s+x.m_por,0)/topN;
+  const tM=topList.reduce((s,x)=>s+x.m_mat,0)/topN;
+  const tI=topList.reduce((s,x)=>s+x.m_ing,0)/topN;
+  const tF=topList.reduce((s,x)=>s+x.m_fis,0)/topN;
+  const tQ=topList.reduce((s,x)=>s+x.m_qui,0)/topN;
+  document.getElementById('pGrafico').innerHTML=`
+  <div class="card fade-in"><div class="card-head"><h2>ðŸ“Š Comparativo â€“ ${a.nome.split(' ')[0]} vs Turma</h2></div><div class="chart-wrap"><canvas id="barChartS5D2"></canvas></div></div>
+  <div class="card fade-in"><div class="card-head"><h2>ðŸŽ¯ Radar â€“ ${a.nome.split(' ')[0]} vs Top ${topN}</h2></div><div class="chart-wrap" style="height:380px"><canvas id="radarChartS5D2"></canvas></div></div>`;
+  if(chartObj){try{Object.values(chartObj).forEach(c=>c.destroy());}catch(e){}}
+  chartObj={};
+  setTimeout(()=>{
+    const labels=['PortuguÃªs','MatemÃ¡tica','InglÃªs','FÃ­sica','QuÃ­mica'];
+    const alunoData=[a.m_por,a.m_mat,a.m_ing,a.m_fis,a.m_qui];
+    const turmaData=[TS5D2.avgs.por,TS5D2.avgs.mat,TS5D2.avgs.ing,TS5D2.avgs.fis,TS5D2.avgs.qui];
+    const medData=[4.5,2.5,4.17,3.33,3.33];
+    const ctx1=document.getElementById('barChartS5D2').getContext('2d');
+    chartObj.bar=new Chart(ctx1,{type:'bar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.85)',borderRadius:6},
+      {label:'MÃ©dia Turma',data:turmaData,backgroundColor:'rgba(100,150,200,.5)',borderRadius:6},
+      {label:'Mediana',data:medData,backgroundColor:'rgba(220,38,38,.3)',borderRadius:6}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,max:10}}}});
+    const ctx2=document.getElementById('radarChartS5D2').getContext('2d');
+    chartObj.radar=new Chart(ctx2,{type:'radar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.2)',borderColor:'#1e3a5f',borderWidth:2,pointBackgroundColor:'#1e3a5f'},
+      {label:'Top '+topN,data:[tP,tM,tI,tF,tQ],backgroundColor:'rgba(251,191,36,.15)',borderColor:'#fbbf24',borderWidth:2,pointBackgroundColor:'#fbbf24'}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{r:{beginAtZero:true,max:10}}}});
+  },100);
+}
+function buildRelatorioS5D2(){
+  const a=atualS5D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:4.5,ac:a.por,total:20},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,ac:a.mat,total:20},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,ac:a.ing,total:12},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:3.33,ac:a.fis,total:12},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:3.33,ac:a.qui,total:12},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,ac:a.his,total:12},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,ac:a.geo,total:12},
+  ];
+  const rows=discs.map(d=>{
+    const cor=d.nota>=7?'#16a34a':d.nota>=d.mediana?'#d97706':'#dc2626';
+    return `<tr><td style="padding:8px 14px;font-weight:700">${d.nome}</td><td style="text-align:center;font-size:20px;font-weight:900;color:${cor}">${d.ac}<span style="font-size:11px;color:var(--text3)">/${d.total}</span></td><td style="text-align:center;font-weight:700;color:${cor}">${d.nota.toFixed(2)}</td><td style="text-align:center;color:var(--text3)">${d.mediana.toFixed(2)}</td><td style="text-align:center">${d.ok?'<span style="color:#16a34a">âœ“</span>':'<span style="color:#dc2626">âœ—</span>'}</td></tr>`;
+  }).join('');
+  document.getElementById('pAnalise').innerHTML=`<div class="card fade-in"><div class="card-head"><h2>ðŸ“ˆ AnÃ¡lise â€“ 5Âº Sim 2Âº Dia</h2></div><table class="ranking-table" style="margin-top:12px"><thead><tr><th style="text-align:left;padding-left:14px">Disciplina</th><th>Acertos</th><th>Nota</th><th>Mediana</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function buildChanceS5D2(){
+  const a=atualS5D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:4.5,peso:2},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,peso:2},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,peso:1.5},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:3.33,peso:1.5},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:3.33,peso:1},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,peso:1},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,peso:1},
+  ];
+  const diff=+(a.media-CORTE_ESPCEX).toFixed(2);
+  const pct=Math.min(100,Math.max(0,+(a.media/CORTE_ESPCEX*100).toFixed(1)));
+  const cor=pct>=100?'#16a34a':pct>=80?'#d97706':'#dc2626';
+  document.getElementById('pChance').innerHTML=_chanceHTML(a.nome,a.media,CORTE_ESPCEX,diff,pct,cor,discs,a.ok_red,'5Âº Simulado 2Âº Dia');
+}
+function buildPlanoS5D2(){
+  const a=atualS5D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:4.5,peso:2,gap:+(4.5-a.m_por).toFixed(2),total:20,dia:'2Âº'},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,peso:2,gap:+(2.5-a.m_mat).toFixed(2),total:20,dia:'2Âº'},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,peso:1.5,gap:+(4.17-a.m_ing).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:3.33,peso:1.5,gap:+(3.33-a.m_fis).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:3.33,peso:1,gap:+(3.33-a.m_qui).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,peso:1,gap:+(4.17-a.m_his).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,peso:1,gap:+(4.17-a.m_geo).toFixed(2),total:12,dia:'2Âº'},
+  ];
+  document.getElementById('pPlano').innerHTML=_planoHTML(a.nome,'5Âº Simulado 2Âº Dia',discs,a.ok_red);
+}
+
+function buildNotasS6D1(){
+  const a=atualS6D1;
+  const portPct=+(a.port/20*100).toFixed(0);
+  const fisiPct=+(a.fisi/12*100).toFixed(0);
+  const quimPct=+(a.quim/12*100).toFixed(0);
+  document.getElementById('pNotas').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“‹ Resumo â€“ 6Âº Simulado â€“ 1Âº Dia</h2></div>
+    <p class="card-sub">02/05/2026 â€“ Medianas: Port 3,00 â€¢ FÃ­s 1,67 â€¢ QuÃ­m 2,50</p>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="s-label">ClassificaÃ§Ã£o</div><div class="s-val" style="color:var(--army)">#${a.rank}Âº</div><div class="s-hint">de ${TS6D1.list.length} alunos</div></div>
+      <div class="stat-item"><div class="s-label">Total Acertos</div><div class="s-val">${a.gtot}</div></div>
+      <div class="stat-item"><div class="s-label">MÃ©dia Ponderada</div><div class="s-val" style="color:${a.aprov?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div></div>
+      <div class="stat-item"><div class="s-label">RedaÃ§Ã£o</div><div class="s-val" style="font-size:28px">${a.ok_red?'âœ“':'âœ—'}</div></div>
+      <div class="stat-item"><div class="s-label">Resultado</div><div class="s-val" style="font-size:28px">${a.aprov?'âœ“':'âœ—'}</div><div class="s-hint">${a.aprov?'Aprovado':a.motivo||'Reprovado'}</div></div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“š Desempenho por Disciplina</h2></div>
+    <div class="disc-grid">
+      <div class="disc-card ${a.ok_port?'pass':'fail'}"><div class="dc-name">PortuguÃªs</div><div class="dc-val">${a.port}</div><div class="dc-max">de 20 â€“ nota ${a.m_port.toFixed(2)} â€“ med 3,00</div>${a.ok_port?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_fisi?'pass':'fail'}"><div class="dc-name">FÃ­sica</div><div class="dc-val">${a.fisi}</div><div class="dc-max">de 12 â€“ nota ${a.m_fisi.toFixed(2)} â€“ med 1,67</div>${a.ok_fisi?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_quim?'pass':'fail'}"><div class="dc-name">QuÃ­mica</div><div class="dc-val">${a.quim}</div><div class="dc-max">de 12 â€“ nota ${a.m_quim.toFixed(2)} â€“ med 2,50</div>${a.ok_quim?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+    </div>
+  </div>`;
+}
+function buildGraficoS6D1(){
+  const a=atualS6D1,topN=10;
+  const topList=TS6D1.list.slice(0,topN);
+  const tP=topList.reduce((s,x)=>s+x.m_port,0)/topN;
+  const tF=topList.reduce((s,x)=>s+x.m_fisi,0)/topN;
+  const tQ=topList.reduce((s,x)=>s+x.m_quim,0)/topN;
+  document.getElementById('pGrafico').innerHTML=`
+  <div class="card fade-in"><div class="card-head"><h2>ðŸ“Š Comparativo â€“ ${a.nome.split(' ')[0]} vs Turma</h2></div><div class="chart-wrap"><canvas id="barChartS6D1"></canvas></div></div>
+  <div class="card fade-in"><div class="card-head"><h2>ðŸŽ¯ Radar â€“ ${a.nome.split(' ')[0]} vs Top ${topN}</h2></div><div class="chart-wrap" style="height:380px"><canvas id="radarChartS6D1"></canvas></div></div>`;
+  if(chartObj){try{Object.values(chartObj).forEach(c=>c.destroy());}catch(e){}}
+  chartObj={};
+  setTimeout(()=>{
+    const labels=['PortuguÃªs','FÃ­sica','QuÃ­mica'];
+    const alunoData=[a.m_port,a.m_fisi,a.m_quim];
+    const turmaData=[TS6D1.avgs.port,TS6D1.avgs.fisi,TS6D1.avgs.quim];
+    const medData=[3.0,1.67,2.5];
+    const ctx1=document.getElementById('barChartS6D1').getContext('2d');
+    chartObj.bar=new Chart(ctx1,{type:'bar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.85)',borderRadius:6},
+      {label:'MÃ©dia Turma',data:turmaData,backgroundColor:'rgba(100,150,200,.5)',borderRadius:6},
+      {label:'Mediana',data:medData,backgroundColor:'rgba(220,38,38,.3)',borderRadius:6}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,max:10}}}});
+    const ctx2=document.getElementById('radarChartS6D1').getContext('2d');
+    chartObj.radar=new Chart(ctx2,{type:'radar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.2)',borderColor:'#1e3a5f',borderWidth:2,pointBackgroundColor:'#1e3a5f'},
+      {label:'Top '+topN,data:[tP,tF,tQ],backgroundColor:'rgba(251,191,36,.15)',borderColor:'#fbbf24',borderWidth:2,pointBackgroundColor:'#fbbf24'}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{r:{beginAtZero:true,max:10}}}});
+  },100);
+}
+function buildRelatorioS6D1(){
+  const a=atualS6D1;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_port,ok:a.ok_port,mediana:3.0,ac:a.port,total:20},
+    {nome:'FÃ­sica',nota:a.m_fisi,ok:a.ok_fisi,mediana:1.67,ac:a.fisi,total:12},
+    {nome:'QuÃ­mica',nota:a.m_quim,ok:a.ok_quim,mediana:2.5,ac:a.quim,total:12},
+  ];
+  const rows=discs.map(d=>{
+    const cor=d.nota>=7?'#16a34a':d.nota>=d.mediana?'#d97706':'#dc2626';
+    return `<tr><td style="padding:8px 14px;font-weight:700">${d.nome}</td><td style="text-align:center;font-size:20px;font-weight:900;color:${cor}">${d.ac}<span style="font-size:11px;color:var(--text3)">/${d.total}</span></td><td style="text-align:center;font-weight:700;color:${cor}">${d.nota.toFixed(2)}</td><td style="text-align:center;color:var(--text3)">${d.mediana.toFixed(2)}</td><td style="text-align:center">${d.ok?'<span style="color:#16a34a">âœ“</span>':'<span style="color:#dc2626">âœ—</span>'}</td></tr>`;
+  }).join('');
+  document.getElementById('pAnalise').innerHTML=`<div class="card fade-in"><div class="card-head"><h2>ðŸ“ˆ AnÃ¡lise â€“ 6Âº Sim 1Âº Dia</h2></div><table class="ranking-table" style="margin-top:12px"><thead><tr><th style="text-align:left;padding-left:14px">Disciplina</th><th>Acertos</th><th>Nota</th><th>Mediana</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function buildChanceS6D1(){
+  const a=atualS6D1;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_port,ok:a.ok_port,mediana:3.0,peso:2},
+    {nome:'FÃ­sica',nota:a.m_fisi,ok:a.ok_fisi,mediana:1.67,peso:1.5},
+    {nome:'QuÃ­mica',nota:a.m_quim,ok:a.ok_quim,mediana:2.5,peso:1},
+  ];
+  const diff=+(a.media-CORTE_ESPCEX).toFixed(2);
+  const pct=Math.min(100,Math.max(0,+(a.media/CORTE_ESPCEX*100).toFixed(1)));
+  const cor=pct>=100?'#16a34a':pct>=80?'#d97706':'#dc2626';
+  document.getElementById('pChance').innerHTML=_chanceHTML(a.nome,a.media,CORTE_ESPCEX,diff,pct,cor,discs,a.ok_red,'6Âº Simulado 1Âº Dia');
+}
+function buildPlanoS6D1(){
+  const a=atualS6D1;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_port,ok:a.ok_port,mediana:3.0,peso:2,gap:+(3.0-a.m_port).toFixed(2),total:20,dia:'1Âº'},
+    {nome:'FÃ­sica',nota:a.m_fisi,ok:a.ok_fisi,mediana:1.67,peso:1.5,gap:+(1.67-a.m_fisi).toFixed(2),total:12,dia:'1Âº'},
+    {nome:'QuÃ­mica',nota:a.m_quim,ok:a.ok_quim,mediana:2.5,peso:1,gap:+(2.5-a.m_quim).toFixed(2),total:12,dia:'1Âº'},
+  ];
+  document.getElementById('pPlano').innerHTML=_planoHTML(a.nome,'6Âº Simulado 1Âº Dia',discs,a.ok_red);
+}
+
+function buildNotasS6D2(){
+  const a=atualS6D2;
+  document.getElementById('pNotas').innerHTML=`
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“‹ Resumo â€“ 6Âº Simulado â€“ 2Âº Dia</h2></div>
+    <p class="card-sub">02/05+09/05/2026 â€“ Medianas: Por 3,00 â€¢ Mat 2,50 â€¢ Ing 4,17 â€¢ FÃ­s 1,67 â€¢ QuÃ­m 2,50 â€¢ His 4,17 â€¢ Geo 4,17</p>
+    <div class="stat-grid">
+      <div class="stat-item"><div class="s-label">ClassificaÃ§Ã£o</div><div class="s-val" style="color:var(--army)">#${a.rank}Âº</div><div class="s-hint">de ${TS6D2.list.length} alunos</div></div>
+      <div class="stat-item"><div class="s-label">Total Acertos</div><div class="s-val">${a.gtot}</div></div>
+      <div class="stat-item"><div class="s-label">MÃ©dia Ponderada</div><div class="s-val" style="color:${a.aprov?'#16a34a':'#dc2626'}">${a.media.toFixed(2)}</div></div>
+      <div class="stat-item"><div class="s-label">RedaÃ§Ã£o</div><div class="s-val" style="font-size:28px">${a.ok_red?'âœ“':'âœ—'}</div></div>
+      <div class="stat-item"><div class="s-label">Resultado</div><div class="s-val" style="font-size:28px">${a.aprov?'âœ“':'âœ—'}</div><div class="s-hint">${a.aprov?'Aprovado':a.motivo||'Reprovado'}</div></div>
+    </div>
+  </div>
+  <div class="card fade-in">
+    <div class="card-head"><h2>ðŸ“š Desempenho por Disciplina</h2></div>
+    <div class="disc-grid">
+      <div class="disc-card ${a.ok_por?'pass':'fail'}"><div class="dc-name">PortuguÃªs</div><div class="dc-val">${a.por}</div><div class="dc-max">de 20 â€“ nota ${a.m_por.toFixed(2)} â€“ med 3,00</div>${a.ok_por?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_mat?'pass':'fail'}"><div class="dc-name">MatemÃ¡tica</div><div class="dc-val">${a.mat}</div><div class="dc-max">de 20 â€“ nota ${a.m_mat.toFixed(2)} â€“ med 2,50</div>${a.ok_mat?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_ing?'pass':'fail'}"><div class="dc-name">InglÃªs</div><div class="dc-val">${a.ing}</div><div class="dc-max">de 12 â€“ nota ${a.m_ing.toFixed(2)} â€“ med 4,17</div>${a.ok_ing?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_fis?'pass':'fail'}"><div class="dc-name">FÃ­sica</div><div class="dc-val">${a.fis}</div><div class="dc-max">de 12 â€“ nota ${a.m_fis.toFixed(2)} â€“ med 1,67</div>${a.ok_fis?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_qui?'pass':'fail'}"><div class="dc-name">QuÃ­mica</div><div class="dc-val">${a.qui}</div><div class="dc-max">de 12 â€“ nota ${a.m_qui.toFixed(2)} â€“ med 2,50</div>${a.ok_qui?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_his?'pass':'fail'}"><div class="dc-name">HistÃ³ria</div><div class="dc-val">${a.his}</div><div class="dc-max">de 12 â€“ nota ${a.m_his.toFixed(2)} â€“ med 4,17</div>${a.ok_his?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+      <div class="disc-card ${a.ok_geo?'pass':'fail'}"><div class="dc-name">Geografia</div><div class="dc-val">${a.geo}</div><div class="dc-max">de 12 â€“ nota ${a.m_geo.toFixed(2)} â€“ med 4,17</div>${a.ok_geo?'<span class="chip chip-aprov">âœ“</span>':'<span class="chip chip-reprov">âœ—</span>'}</div>
+    </div>
+  </div>`;
+}
+function buildGraficoS6D2(){
+  const a=atualS6D2,topN=10;
+  const topList=TS6D2.list.slice(0,topN);
+  const tP=topList.reduce((s,x)=>s+x.m_por,0)/topN;
+  const tM=topList.reduce((s,x)=>s+x.m_mat,0)/topN;
+  const tI=topList.reduce((s,x)=>s+x.m_ing,0)/topN;
+  const tF=topList.reduce((s,x)=>s+x.m_fis,0)/topN;
+  const tQ=topList.reduce((s,x)=>s+x.m_qui,0)/topN;
+  document.getElementById('pGrafico').innerHTML=`
+  <div class="card fade-in"><div class="card-head"><h2>ðŸ“Š Comparativo â€“ ${a.nome.split(' ')[0]} vs Turma</h2></div><div class="chart-wrap"><canvas id="barChartS6D2"></canvas></div></div>
+  <div class="card fade-in"><div class="card-head"><h2>ðŸŽ¯ Radar â€“ ${a.nome.split(' ')[0]} vs Top ${topN}</h2></div><div class="chart-wrap" style="height:380px"><canvas id="radarChartS6D2"></canvas></div></div>`;
+  if(chartObj){try{Object.values(chartObj).forEach(c=>c.destroy());}catch(e){}}
+  chartObj={};
+  setTimeout(()=>{
+    const labels=['PortuguÃªs','MatemÃ¡tica','InglÃªs','FÃ­sica','QuÃ­mica'];
+    const alunoData=[a.m_por,a.m_mat,a.m_ing,a.m_fis,a.m_qui];
+    const turmaData=[TS6D2.avgs.por,TS6D2.avgs.mat,TS6D2.avgs.ing,TS6D2.avgs.fis,TS6D2.avgs.qui];
+    const medData=[3.0,2.5,4.17,1.67,2.5];
+    const ctx1=document.getElementById('barChartS6D2').getContext('2d');
+    chartObj.bar=new Chart(ctx1,{type:'bar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.85)',borderRadius:6},
+      {label:'MÃ©dia Turma',data:turmaData,backgroundColor:'rgba(100,150,200,.5)',borderRadius:6},
+      {label:'Mediana',data:medData,backgroundColor:'rgba(220,38,38,.3)',borderRadius:6}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{y:{beginAtZero:true,max:10}}}});
+    const ctx2=document.getElementById('radarChartS6D2').getContext('2d');
+    chartObj.radar=new Chart(ctx2,{type:'radar',data:{labels,datasets:[
+      {label:'Aluno',data:alunoData,backgroundColor:'rgba(30,58,95,.2)',borderColor:'#1e3a5f',borderWidth:2,pointBackgroundColor:'#1e3a5f'},
+      {label:'Top '+topN,data:[tP,tM,tI,tF,tQ],backgroundColor:'rgba(251,191,36,.15)',borderColor:'#fbbf24',borderWidth:2,pointBackgroundColor:'#fbbf24'}
+    ]},options:{responsive:true,plugins:{legend:{position:'bottom'}},scales:{r:{beginAtZero:true,max:10}}}});
+  },100);
+}
+function buildRelatorioS6D2(){
+  const a=atualS6D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:3.0,ac:a.por,total:20},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,ac:a.mat,total:20},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,ac:a.ing,total:12},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:1.67,ac:a.fis,total:12},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:2.5,ac:a.qui,total:12},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,ac:a.his,total:12},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,ac:a.geo,total:12},
+  ];
+  const rows=discs.map(d=>{
+    const cor=d.nota>=7?'#16a34a':d.nota>=d.mediana?'#d97706':'#dc2626';
+    return `<tr><td style="padding:8px 14px;font-weight:700">${d.nome}</td><td style="text-align:center;font-size:20px;font-weight:900;color:${cor}">${d.ac}<span style="font-size:11px;color:var(--text3)">/${d.total}</span></td><td style="text-align:center;font-weight:700;color:${cor}">${d.nota.toFixed(2)}</td><td style="text-align:center;color:var(--text3)">${d.mediana.toFixed(2)}</td><td style="text-align:center">${d.ok?'<span style="color:#16a34a">âœ“</span>':'<span style="color:#dc2626">âœ—</span>'}</td></tr>`;
+  }).join('');
+  document.getElementById('pAnalise').innerHTML=`<div class="card fade-in"><div class="card-head"><h2>ðŸ“ˆ AnÃ¡lise â€“ 6Âº Sim 2Âº Dia</h2></div><table class="ranking-table" style="margin-top:12px"><thead><tr><th style="text-align:left;padding-left:14px">Disciplina</th><th>Acertos</th><th>Nota</th><th>Mediana</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+function buildChanceS6D2(){
+  const a=atualS6D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:3.0,peso:2},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,peso:2},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,peso:1.5},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:1.67,peso:1.5},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:2.5,peso:1},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,peso:1},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,peso:1},
+  ];
+  const diff=+(a.media-CORTE_ESPCEX).toFixed(2);
+  const pct=Math.min(100,Math.max(0,+(a.media/CORTE_ESPCEX*100).toFixed(1)));
+  const cor=pct>=100?'#16a34a':pct>=80?'#d97706':'#dc2626';
+  document.getElementById('pChance').innerHTML=_chanceHTML(a.nome,a.media,CORTE_ESPCEX,diff,pct,cor,discs,a.ok_red,'6Âº Simulado 2Âº Dia');
+}
+function buildPlanoS6D2(){
+  const a=atualS6D2;
+  const discs=[
+    {nome:'PortuguÃªs',nota:a.m_por,ok:a.ok_por,mediana:3.0,peso:2,gap:+(3.0-a.m_por).toFixed(2),total:20,dia:'2Âº'},
+    {nome:'MatemÃ¡tica',nota:a.m_mat,ok:a.ok_mat,mediana:2.5,peso:2,gap:+(2.5-a.m_mat).toFixed(2),total:20,dia:'2Âº'},
+    {nome:'InglÃªs',nota:a.m_ing,ok:a.ok_ing,mediana:4.17,peso:1.5,gap:+(4.17-a.m_ing).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'FÃ­sica',nota:a.m_fis,ok:a.ok_fis,mediana:1.67,peso:1.5,gap:+(1.67-a.m_fis).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'QuÃ­mica',nota:a.m_qui,ok:a.ok_qui,mediana:2.5,peso:1,gap:+(2.5-a.m_qui).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'HistÃ³ria',nota:a.m_his,ok:a.ok_his,mediana:4.17,peso:1,gap:+(4.17-a.m_his).toFixed(2),total:12,dia:'2Âº'},
+    {nome:'Geografia',nota:a.m_geo,ok:a.ok_geo,mediana:4.17,peso:1,gap:+(4.17-a.m_geo).toFixed(2),total:12,dia:'2Âº'},
+  ];
+  document.getElementById('pPlano').innerHTML=_planoHTML(a.nome,'6Âº Simulado 2Âº Dia',discs,a.ok_red);
 }
 function buildNotasS5D1(){
   const a=atualS5D1;
@@ -5242,6 +6495,11 @@ renderRankingS4D1();
   renderRankingS4D2();
   renderGeralS3();
   renderRankingS5D1();
+  renderGeralS4();
+  renderGeralS5();
+  renderRankingS5D2();
+  renderRankingS6D1();
+  renderRankingS6D2();
 
 // ═══════════════════════════════════════════════════════
 // RANKING GERAL 2º SIMULADO — MÉDIA DOS DOIS DIAS
